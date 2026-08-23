@@ -19,6 +19,8 @@ export const ServicesTab: React.FC = () => {
   const [selectedServiceIndex, setSelectedServiceIndex] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadFeedback, setUploadFeedback] = useState<string | null>(null);
+  const [isUploadingSecond, setIsUploadingSecond] = useState<boolean>(false);
+  const [uploadSecondFeedback, setUploadSecondFeedback] = useState<string | null>(null);
 
   // Active Main Service
   const activeService = services[selectedServiceIndex] || services[0];
@@ -45,7 +47,7 @@ export const ServicesTab: React.FC = () => {
           ...activeService,
           image: res.url
         });
-        setUploadFeedback('تصویر با موفقیت در سرور آپلود شد.');
+        setUploadFeedback('تصویر اول با موفقیت در سرور آپلود شد.');
       } else {
         setUploadFeedback('خطا: ' + res.message);
       }
@@ -53,6 +55,30 @@ export const ServicesTab: React.FC = () => {
       setUploadFeedback('خطا در ارتباط با سرور');
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleSecondImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !activeService) return;
+
+    setIsUploadingSecond(true);
+    setUploadSecondFeedback(null);
+    try {
+      const res = await uploadFile(file);
+      if (res.success && res.url) {
+        updateSingleService({
+          ...activeService,
+          secondaryImage: res.url
+        });
+        setUploadSecondFeedback('تصویر دوم با موفقیت در سرور آپلود شد.');
+      } else {
+        setUploadSecondFeedback('خطا: ' + res.message);
+      }
+    } catch {
+      setUploadSecondFeedback('خطا در ارتباط با سرور');
+    } finally {
+      setIsUploadingSecond(false);
     }
   };
 
@@ -213,16 +239,17 @@ export const ServicesTab: React.FC = () => {
               />
             </div>
 
-            {/* Image URL & Upload */}
-            <div className="md:col-span-2 space-y-2">
-              <label className="block text-xs font-bold text-gray-700 mb-1">تصویر شاخص خدمت</label>
+            {/* Image 1 URL & Upload */}
+            <div className="md:col-span-2 space-y-2 p-3 bg-gray-50/80 rounded-xl border border-gray-200">
+              <label className="block text-xs font-bold text-gray-900 mb-1">تصویر اول (بالایی) خدمت</label>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <input
                   type="text"
                   dir="ltr"
+                  placeholder="https://..."
                   value={activeService.image}
                   onChange={(e) => updateSingleService({ ...activeService, image: e.target.value })}
-                  className="flex-1 px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-mono"
+                  className="flex-1 px-3 py-2 text-xs bg-white border border-gray-300 rounded-xl font-mono"
                 />
                 <label className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shrink-0 transition-colors">
                   {isUploading ? (
@@ -230,11 +257,56 @@ export const ServicesTab: React.FC = () => {
                   ) : (
                     <Upload className="w-4 h-4 text-[#DECA19]" />
                   )}
-                  <span>{isUploading ? 'در حال آپلود...' : 'آپلود تصویر جدید'}</span>
+                  <span>{isUploading ? 'در حال آپلود...' : 'آپلود تصویر اول'}</span>
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                 </label>
               </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-0.5">تیتر زیرنویس تصویر اول (اختیاری):</label>
+                <input
+                  type="text"
+                  placeholder="مثال: کارگاه قالب‌سازی و ماشین‌کاری دقیق CNC"
+                  value={activeService.imageCaption || ''}
+                  onChange={(e) => updateSingleService({ ...activeService, imageCaption: e.target.value })}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-gray-700"
+                />
+              </div>
               {uploadFeedback && <p className="text-xs text-emerald-600 font-bold">{uploadFeedback}</p>}
+            </div>
+
+            {/* Image 2 URL & Upload */}
+            <div className="md:col-span-2 space-y-2 p-3 bg-gray-50/80 rounded-xl border border-gray-200">
+              <label className="block text-xs font-bold text-gray-900 mb-1">تصویر دوم (پایینی - زیر تصویر اول) خدمت</label>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input
+                  type="text"
+                  dir="ltr"
+                  placeholder="https://..."
+                  value={activeService.secondaryImage || ''}
+                  onChange={(e) => updateSingleService({ ...activeService, secondaryImage: e.target.value })}
+                  className="flex-1 px-3 py-2 text-xs bg-white border border-gray-300 rounded-xl font-mono"
+                />
+                <label className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shrink-0 transition-colors">
+                  {isUploadingSecond ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4 text-[#DECA19]" />
+                  )}
+                  <span>{isUploadingSecond ? 'در حال آپلود...' : 'آپلود تصویر دوم'}</span>
+                  <input type="file" accept="image/*" onChange={handleSecondImageUpload} className="hidden" />
+                </label>
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-0.5">تیتر زیرنویس تصویر دوم (اختیاری):</label>
+                <input
+                  type="text"
+                  placeholder="مثال: تست انطباق و مونتاژ سنبه و ماتریس در کارخانه"
+                  value={activeService.secondaryImageCaption || ''}
+                  onChange={(e) => updateSingleService({ ...activeService, secondaryImageCaption: e.target.value })}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-gray-700"
+                />
+              </div>
+              {uploadSecondFeedback && <p className="text-xs text-emerald-600 font-bold">{uploadSecondFeedback}</p>}
             </div>
           </div>
 

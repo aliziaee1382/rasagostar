@@ -18,13 +18,15 @@ import {
   FileText, 
   MessageSquare,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Share2
 } from 'lucide-react';
 
 import { ThemeTab } from './tabs/ThemeTab';
 import { SliderTab } from './tabs/SliderTab';
 import { PagesContentTab } from './tabs/PagesContentTab';
 import { GeneralInfoTab } from './tabs/GeneralInfoTab';
+import { MessengersTab } from './tabs/MessengersTab';
 import { ServicesTab } from './tabs/ServicesTab';
 import { ProductsTab } from './tabs/ProductsTab';
 import { PartnersTab } from './tabs/PartnersTab';
@@ -39,6 +41,7 @@ interface AdminDashboardModalProps {
 
 type AdminTab = 
   | 'general' 
+  | 'messengers'
   | 'theme' 
   | 'slider' 
   | 'pages' 
@@ -116,6 +119,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
 
   const tabs: { id: AdminTab; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number }[] = [
     { id: 'general', label: 'اطلاعات کارخانه و تماس', icon: Building2 },
+    { id: 'messengers', label: 'پیام‌رسان‌ها و درگاه‌های چت', icon: Share2 },
     { id: 'theme', label: 'پالت رنگ و استایل (Theme)', icon: Palette },
     { id: 'slider', label: 'اسلایدر صفحه اصلی (Hero)', icon: Sliders },
     { id: 'pages', label: 'متون و محتوای صفحات', icon: FileText },
@@ -265,6 +269,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
           {/* Tab Content Panel View */}
           <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             {activeTab === 'general' && <GeneralInfoTab />}
+            {activeTab === 'messengers' && <MessengersTab />}
             {activeTab === 'theme' && <ThemeTab />}
             {activeTab === 'slider' && <SliderTab />}
             {activeTab === 'pages' && <PagesContentTab />}

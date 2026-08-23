@@ -15,7 +15,9 @@ import {
   ThemeSettings,
   HeroSlide,
   PagesContentData,
-  ComplementaryService
+  ComplementaryService,
+  OnlineMessengerItem,
+  MessengersSectionConfig
 } from '../types';
 import { DEFAULT_SITE_DATA } from '../data/mockData';
 
@@ -124,6 +126,11 @@ interface DataContextType {
   updateIntegratedProcessSteps: (steps: IntegratedProcessStep[]) => void;
   updateProductionChainSteps: (steps: ProductionChainStep[]) => void;
   updateTimelineMilestones: (milestones: TimelineMilestone[]) => void;
+  updateOnlineMessengers: (messengers: OnlineMessengerItem[]) => void;
+  updateSingleOnlineMessenger: (messenger: OnlineMessengerItem) => void;
+  addOnlineMessenger: (messenger: OnlineMessengerItem) => void;
+  deleteOnlineMessenger: (id: string) => void;
+  updateMessengersConfig: (config: Partial<MessengersSectionConfig>) => void;
   // Upload and storage
   uploadFile: (file: File) => Promise<{ success: boolean; url: string; message: string; filename?: string }>;
   // Sync actions
@@ -178,13 +185,26 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           },
           stats: parsed.stats || DEFAULT_SITE_DATA.stats,
           aboutInfrastructureStats: parsed.aboutInfrastructureStats || DEFAULT_SITE_DATA.aboutInfrastructureStats,
-          services: parsed.services || DEFAULT_SITE_DATA.services,
+          services: (parsed.services && Array.isArray(parsed.services))
+            ? parsed.services.map((srv: any) => {
+                const defaultMatch = DEFAULT_SITE_DATA.services.find(s => s.id === srv.id);
+                return {
+                  ...defaultMatch,
+                  ...srv,
+                  secondaryImage: srv.secondaryImage || defaultMatch?.secondaryImage,
+                  imageCaption: srv.imageCaption || defaultMatch?.imageCaption,
+                  secondaryImageCaption: srv.secondaryImageCaption || defaultMatch?.secondaryImageCaption,
+                };
+              })
+            : DEFAULT_SITE_DATA.services,
           complementaryServices: parsed.complementaryServices || DEFAULT_SITE_DATA.complementaryServices,
           portfolioItems: parsed.portfolioItems || DEFAULT_SITE_DATA.portfolioItems,
           partners: parsed.partners || DEFAULT_SITE_DATA.partners,
           integratedProcessSteps: parsed.integratedProcessSteps || DEFAULT_SITE_DATA.integratedProcessSteps,
           productionChainSteps: parsed.productionChainSteps || DEFAULT_SITE_DATA.productionChainSteps,
           timelineMilestones: parsed.timelineMilestones || DEFAULT_SITE_DATA.timelineMilestones,
+          onlineMessengers: parsed.onlineMessengers || DEFAULT_SITE_DATA.onlineMessengers,
+          messengersConfig: { ...DEFAULT_SITE_DATA.messengersConfig, ...(parsed.messengersConfig || {}) },
         };
       }
     } catch (e) {
@@ -523,6 +543,8 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               integratedProcessSteps: serverData.integratedProcessSteps || DEFAULT_SITE_DATA.integratedProcessSteps,
               productionChainSteps: serverData.productionChainSteps || DEFAULT_SITE_DATA.productionChainSteps,
               timelineMilestones: serverData.timelineMilestones || DEFAULT_SITE_DATA.timelineMilestones,
+              onlineMessengers: serverData.onlineMessengers || DEFAULT_SITE_DATA.onlineMessengers,
+              messengersConfig: { ...DEFAULT_SITE_DATA.messengersConfig, ...(serverData.messengersConfig || {}) },
             };
             setData(merged);
             localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(merged));
@@ -751,6 +773,47 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setData((prev) => ({ ...prev, timelineMilestones }));
   };
 
+  const updateOnlineMessengers = (onlineMessengers: OnlineMessengerItem[]) => {
+    setData((prev) => ({ ...prev, onlineMessengers }));
+  };
+
+  const updateSingleOnlineMessenger = (messenger: OnlineMessengerItem) => {
+    setData((prev) => {
+      const existing = prev.onlineMessengers || DEFAULT_SITE_DATA.onlineMessengers || [];
+      const updated = existing.map((m) => (m.id === messenger.id ? messenger : m));
+      return { ...prev, onlineMessengers: updated };
+    });
+  };
+
+  const addOnlineMessenger = (messenger: OnlineMessengerItem) => {
+    setData((prev) => {
+      const existing = prev.onlineMessengers || DEFAULT_SITE_DATA.onlineMessengers || [];
+      return { ...prev, onlineMessengers: [...existing, messenger] };
+    });
+  };
+
+  const deleteOnlineMessenger = (id: string) => {
+    setData((prev) => {
+      const existing = prev.onlineMessengers || DEFAULT_SITE_DATA.onlineMessengers || [];
+      return { ...prev, onlineMessengers: existing.filter((m) => m.id !== id) };
+    });
+  };
+
+  const updateMessengersConfig = (config: Partial<MessengersSectionConfig>) => {
+    setData((prev) => ({
+      ...prev,
+      messengersConfig: {
+        ...(prev.messengersConfig || DEFAULT_SITE_DATA.messengersConfig || {
+          badge: 'پیام‌رسان‌ها و ارتباط مستقیم',
+          title: 'استعلام سریع، مشاوره فنی و ارسال فایل',
+          description: 'جهت گفتگوی آنلاین و تبادل نقشه، از طریق درگاه‌های پیام‌رسان زیر با شماره متصل اقدام فرمایید:',
+          connectedPhone: '09103176904',
+        }),
+        ...config
+      }
+    }));
+  };
+
   // Save all changes to the backend (MySQL/PHP API + LocalStorage)
   const saveToBackend = async (customData?: Partial<SiteContentData>): Promise<{ success: boolean; message: string }> => {
     setIsSaving(true);
@@ -911,6 +974,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateIntegratedProcessSteps,
         updateProductionChainSteps,
         updateTimelineMilestones,
+        updateOnlineMessengers,
+        updateSingleOnlineMessenger,
+        addOnlineMessenger,
+        deleteOnlineMessenger,
+        updateMessengersConfig,
         uploadFile,
         saveToBackend,
         resetToDefaults,

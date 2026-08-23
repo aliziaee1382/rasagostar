@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PageId, ServiceCategory, PortfolioItem } from '../../types';
 import { useData } from '../../context/DataContext';
 import { DEFAULT_HERO_SLIDES } from '../../data/mockData';
@@ -24,7 +25,9 @@ import {
   Sliders, 
   Check, 
   Phone, 
-  Maximize2 
+  Maximize2,
+  FileText,
+  Download
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -117,125 +120,133 @@ export const HomePage: React.FC<HomePageProps> = ({
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-12 items-center relative z-10 my-auto">
           
-          {/* Main Hero Content for Active Slide */}
-          <div className="lg:col-span-7 space-y-2.5 sm:space-y-5 text-right transition-all duration-500">
-            
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#DECA19]/15 text-[#DECA19] px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold border border-[#DECA19]/30">
-              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>{activeSlideData.badge || 'بیش از ۴۰ سال سابقه درخشان در صنعت'} • {companyInfo.name || 'رسا قطعه گستر مهر'}</span>
-            </div>
+          {/* Main Hero Content for Active Slide with Smooth Animation */}
+          <div className="lg:col-span-7 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={currentSlide}
+                initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -20, filter: 'blur(4px)' }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-2.5 sm:space-y-5 text-right"
+              >
+                {/* Top Badge */}
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#DECA19]/15 text-[#DECA19] px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold border border-[#DECA19]/30">
+                  <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span>{activeSlideData.badge || 'بیش از ۴۰ سال سابقه درخشان در صنعت'} • {companyInfo.name || 'رسا قطعه گستر مهر'}</span>
+                </div>
 
-            {/* Slide Title */}
-            <h1 className="text-xl sm:text-4.5xl lg:text-5xl font-black text-white leading-tight sm:leading-[1.25] tracking-tight">
-              {activeSlideData.title}
-            </h1>
+                {/* Slide Title */}
+                <h1 className="text-xl sm:text-4.5xl lg:text-5xl font-black text-white leading-tight sm:leading-[1.25] tracking-tight">
+                  {activeSlideData.title}
+                </h1>
 
-            {/* Slide Slogan / Key Punchline */}
-            {(activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle) && (
-              <div className="p-2 sm:p-3.5 bg-white/5 border-r-3 sm:border-r-4 border-[#DECA19] rounded-l-xl backdrop-blur-xs">
-                <p className="text-xs sm:text-base font-bold text-[#DECA19] leading-snug">
-                  {activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle}
-                </p>
-              </div>
-            )}
-
-            {/* Description */}
-            <p className="text-[11px] sm:text-sm text-gray-300 leading-relaxed font-light max-w-2xl text-justify">
-              {activeSlideData.description}
-            </p>
-
-            {/* Dynamic Bullet Points */}
-            {(activeSlideData.bulletPoints && activeSlideData.bulletPoints.length > 0) && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2.5 pt-0.5 sm:pt-1 text-[11px] sm:text-xs text-gray-200">
-                {activeSlideData.bulletPoints.map((point, idx) => (
-                  <div key={idx} className="flex items-start gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DECA19] shrink-0 mt-0.5" />
-                    <span className="leading-snug">{point}</span>
+                {/* Slide Slogan / Key Punchline */}
+                {(activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle) && (
+                  <div className="p-2 sm:p-3.5 bg-white/5 border-r-3 sm:border-r-4 border-[#DECA19] rounded-l-xl backdrop-blur-xs">
+                    <p className="text-xs sm:text-base font-bold text-[#DECA19] leading-snug">
+                      {activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle}
+                    </p>
                   </div>
-                ))}
-              </div>
-            )}
+                )}
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3.5 pt-2 sm:pt-4">
-              <button
-                id="hero-services-cta"
-                onClick={() => {
-                  const action = activeSlideData.secondaryBtnAction || 'services';
-                  if (['mold_making', 'stamping', 'plastic_injection', 'laser_cutting'].includes(action)) {
-                    onOpenService(action as ServiceCategory);
-                  } else if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
-                    onNavigate(action as PageId);
-                  } else {
-                    onNavigate('services');
-                  }
-                }}
-                className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all border border-[#DECA19]/50 flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95"
-              >
-                <span>{activeSlideData.secondaryBtnText || 'مشاهده خطوط تولید و خدمات'}</span>
-                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DECA19]" />
-              </button>
+                {/* Description */}
+                <p className="text-[11px] sm:text-sm text-gray-300 leading-relaxed font-light max-w-2xl text-justify">
+                  {activeSlideData.description}
+                </p>
 
-              <button
-                id="hero-contact-cta"
-                onClick={() => {
-                  const action = activeSlideData.primaryBtnAction || 'contact';
-                  if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
-                    onNavigate(action as PageId);
-                  } else {
-                    onNavigate('contact');
-                  }
-                }}
-                className="bg-[#DECA19] hover:bg-[#ebd828] text-gray-950 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl font-black text-xs sm:text-sm shadow-md hover:shadow-xl transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95"
-              >
-                <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-900" />
-                <span>{activeSlideData.primaryBtnText || 'استعلام قیمت و مشاوره فنی'}</span>
-              </button>
-            </div>
-
-          </div>
-
-          {/* Hero Image Visual Card for Active Slide */}
-          <div className="lg:col-span-5">
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl border sm:border-2 border-[#DECA19]/50 group bg-gray-900">
-              <img 
-                key={activeSlideData.image || activeSlideData.bgImage}
-                src={activeSlideData.image || activeSlideData.bgImage} 
-                alt={activeSlideData.title}
-                referrerPolicy="no-referrer"
-                className="w-full h-[180px] xs:h-[220px] sm:h-[390px] object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-95 animate-fadeIn"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
-              
-              {/* Top Corner Badge for Slide Number */}
-              <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold text-[#DECA19] border border-[#DECA19]/40 flex items-center gap-1">
-                <span>اسلاید</span>
-                <span className="en-num font-bold">{currentSlide + 1}</span>
-                <span>از</span>
-                <span className="en-num font-bold">{heroSlides.length}</span>
-              </div>
-
-              {/* Metrics Overlay on bottom */}
-              <div className="absolute bottom-2.5 sm:bottom-5 right-2.5 sm:right-5 left-2.5 sm:left-5 text-right space-y-1.5 sm:space-y-2.5">
-                {(activeSlideData.metrics && activeSlideData.metrics.length > 0) && (
-                  <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
-                    {activeSlideData.metrics.map((metric, idx) => (
-                      <div key={idx} className="bg-[#0c2214]/90 backdrop-blur-md p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl border border-[#DECA19]/40 text-center">
-                        <span className="block text-[10px] sm:text-[11px] text-gray-300">{metric.label}</span>
-                        <span className="text-xs sm:text-sm font-black text-[#DECA19] en-num">{metric.value}</span>
+                {/* Dynamic Bullet Points */}
+                {(activeSlideData.bulletPoints && activeSlideData.bulletPoints.length > 0) && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2.5 pt-0.5 sm:pt-1 text-[11px] sm:text-xs text-gray-200">
+                    {activeSlideData.bulletPoints.map((point, idx) => (
+                      <div key={idx} className="flex items-start gap-1.5 sm:gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DECA19] shrink-0 mt-0.5" />
+                        <span className="leading-snug">{point}</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-300 pt-0.5 sm:pt-1">
-                  <span>تولید مطابق نقشه و نمونه</span>
-                  <span className="text-[#DECA19] font-bold">{companyInfo.name || 'شرکت رسا قطعه گستر مهر'}</span>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3.5 pt-2 sm:pt-4">
+                  <button
+                    id="hero-services-cta"
+                    onClick={() => {
+                      const action = activeSlideData.secondaryBtnAction || 'services';
+                      if (['mold_making', 'stamping', 'plastic_injection', 'laser_cutting'].includes(action)) {
+                        onOpenService(action as ServiceCategory);
+                      } else if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
+                        onNavigate(action as PageId);
+                      } else {
+                        onNavigate('services');
+                      }
+                    }}
+                    className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all border border-[#DECA19]/50 flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95"
+                  >
+                    <span>{activeSlideData.secondaryBtnText || 'مشاهده خطوط تولید و خدمات'}</span>
+                    <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DECA19]" />
+                  </button>
+
+                  <button
+                    id="hero-contact-cta"
+                    onClick={() => {
+                      const action = activeSlideData.primaryBtnAction || 'contact';
+                      if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
+                        onNavigate(action as PageId);
+                      } else {
+                        onNavigate('contact');
+                      }
+                    }}
+                    className="bg-[#DECA19] hover:bg-[#ebd828] text-gray-950 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl font-black text-xs sm:text-sm shadow-md hover:shadow-xl transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-900" />
+                    <span>{activeSlideData.primaryBtnText || 'استعلام قیمت و مشاوره فنی'}</span>
+                  </button>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
+          {/* Hero Image Visual Card for Active Slide with Smooth Transition */}
+          <div className="lg:col-span-5">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, scale: 0.95, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, scale: 1.03, filter: 'blur(4px)' }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl border sm:border-2 border-[#DECA19]/50 group bg-gray-900"
+              >
+                <img 
+                  src={activeSlideData.image || activeSlideData.bgImage} 
+                  alt={activeSlideData.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-[180px] xs:h-[220px] sm:h-[390px] object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-95"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
+
+                {/* Metrics Overlay on bottom */}
+                <div className="absolute bottom-2.5 sm:bottom-5 right-2.5 sm:right-5 left-2.5 sm:left-5 text-right space-y-1.5 sm:space-y-2.5">
+                  {(activeSlideData.metrics && activeSlideData.metrics.length > 0) && (
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+                      {activeSlideData.metrics.map((metric, idx) => (
+                        <div key={idx} className="bg-[#0c2214]/90 backdrop-blur-md p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl border border-[#DECA19]/40 text-center">
+                          <span className="block text-[10px] sm:text-[11px] text-gray-300">{metric.label}</span>
+                          <span className="text-xs sm:text-sm font-black text-[#DECA19] en-num">{metric.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-300 pt-0.5 sm:pt-1">
+                    <span>تولید مطابق نقشه و نمونه</span>
+                    <span className="text-[#DECA19] font-bold">{companyInfo.name || 'شرکت رسا قطعه گستر مهر'}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Carousel Bottom Control Bar & Slide Selectors */}
@@ -528,6 +539,45 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6.5. Official Catalog Download Callout Banner */}
+      <section id="catalog-download-callout" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div 
+          id="catalog-download-card"
+          className="bg-gradient-to-r from-[#0c2214] to-[#12331e] rounded-xl sm:rounded-2xl py-4 px-5 sm:px-8 border border-[#DECA19]/30 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3.5 sm:gap-6 text-right"
+        >
+          {/* Right Content: Icon & Texts */}
+          <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#0F612F]/80 border border-[#DECA19]/40 text-[#DECA19] flex items-center justify-center shrink-0 shadow-inner">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <div className="space-y-0.5 sm:space-y-1">
+              <h3 className="text-xs sm:text-base font-bold text-white flex items-center gap-2">
+                <span>کاتالوگ جامع محصولات و تجهیزات صنعتی</span>
+                <span className="hidden sm:inline-block bg-[#DECA19]/20 text-[#DECA19] text-[10px] font-bold px-2 py-0.5 rounded-md border border-[#DECA19]/30 font-mono en-num">PDF</span>
+              </h3>
+              <p className="text-[10px] sm:text-xs text-gray-300 font-light leading-relaxed">
+                شامل مشخصات فنی پرس‌ها، ابعاد دستگاه برش لیزر و نمونه قطعات تولیدی
+              </p>
+            </div>
+          </div>
+
+          {/* Left Content: Action Button */}
+          <div className="w-full sm:w-auto shrink-0 flex justify-end">
+            <a
+              id="btn-download-catalog-home"
+              href="../upload/rasa.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-[#DECA19] hover:bg-[#c9b715] text-gray-950 font-bold text-xs py-2.5 px-5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 whitespace-nowrap"
+            >
+              <Download className="w-4 h-4 text-gray-950" />
+              <span>دانلود کاتالوگ رسمی (PDF)</span>
+            </a>
           </div>
         </div>
       </section>

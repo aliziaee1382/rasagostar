@@ -3,6 +3,7 @@ import { PageId } from '../../types';
 import { useData } from '../../context/DataContext';
 import { FAQS } from '../../data/mockData';
 import { RubikaIcon } from '../RubikaIcon';
+import { MessengerIconRenderer } from '../MessengerIconRenderer';
 import { 
   Phone, 
   Mail, 
@@ -45,8 +46,19 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedPhone, setCopiedPhone] = useState(false);
 
+  const messengersConfig = data?.messengersConfig || {
+    badge: 'پیام‌رسان‌ها و ارتباط مستقیم',
+    title: 'استعلام سریع، مشاوره فنی و ارسال فایل',
+    description: 'جهت گفتگوی آنلاین و تبادل نقشه، از طریق درگاه‌های پیام‌رسان زیر با شماره متصل اقدام فرمایید:',
+    connectedPhone: companyInfo.mobileSupport || '09103176904',
+  };
+
+  const onlineMessengers = (data?.onlineMessengers && data.onlineMessengers.length > 0)
+    ? data.onlineMessengers.filter((m) => m.isActive !== false)
+    : [];
+
   const handleCopyPhone = () => {
-    navigator.clipboard.writeText(companyInfo.mobileSupport);
+    navigator.clipboard.writeText(messengersConfig.connectedPhone || companyInfo.mobileSupport || '09103176904');
     setCopiedPhone(true);
     setTimeout(() => setCopiedPhone(false), 2500);
   };
@@ -395,42 +407,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     </div>
                   </div>
 
-                  {/* Attachment */}
-                  <div>
-                    <label className="block text-[11px] sm:text-xs font-bold text-gray-700 mb-1">
-                      پیوست نقشه فنی، مدل سه‌بعدی یا تصویر قطعه (اختیاری):
-                    </label>
-                    <label className="border-2 border-dashed border-gray-200 hover:border-[#0F612F] rounded-lg sm:rounded-xl p-2.5 sm:p-3.5 flex flex-col items-center justify-center cursor-pointer transition-colors bg-gray-50/60 hover:bg-emerald-50/20">
-                      <UploadCloud className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mb-0.5 sm:mb-1" />
-                      <span className="text-[10px] sm:text-xs text-gray-600 font-medium text-center">
-                        {selectedFile ? (
-                          <span className="text-[#0F612F] font-bold">
-                            فایل: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-                          </span>
-                        ) : (
-                          'انتخاب فایل نقشه یا تصویر (DWG, STP, PDF, JPG, ZIP)'
-                        )}
-                      </span>
-                      <span className="text-[9px] sm:text-[10px] text-gray-400 mt-0.5">حداکثر حجم مجاز: ۳۰ مگابایت</span>
-                      <input 
-                        type="file" 
-                        className="hidden" 
-                        accept=".dwg,.dxf,.stp,.step,.pdf,.png,.jpg,.jpeg,.zip,.rar,.igs,.iges"
-                        onChange={handleFileChange}
-                      />
-                    </label>
-                    {selectedFile && (
-                      <div className="mt-1 flex items-center justify-between text-[11px] sm:text-xs text-gray-500 bg-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg">
-                        <span className="truncate max-w-[80%]">{selectedFile.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedFile(null)}
-                          className="text-red-500 hover:text-red-700 text-[10px] sm:text-[11px] font-bold cursor-pointer"
-                        >
-                          حذف فایل
-                        </button>
-                      </div>
-                    )}
+                  {/* Tip note regarding sending files and drawings via messengers */}
+                  <div className="bg-emerald-50/80 border border-[#0F612F]/20 rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 text-right">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#0F612F]/10 text-[#0F612F] flex items-center justify-center shrink-0 border border-[#0F612F]/20 mt-0.5">
+                      <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0F612F]" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-[11px] sm:text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#DECA19]"></span>
+                        <span>نکته مهم در خصوص ارسال فایل، نقشه یا تصویر:</span>
+                      </h4>
+                      <p className="text-[10px] sm:text-xs text-gray-600 leading-relaxed font-normal">
+                        در صورتی که قصد ارسال نقشه‌های فنی (CAD/CAM/DWG/STEP)، اسناد PDF یا تصویر قطعه را دارید، لطفاً فایل‌های خود را از طریق پیام‌رسان‌های <strong className="text-[#0F612F] font-bold">واتساپ، ایتا، روبیکا یا تلگرام</strong> به شماره پشتیبانی <span className="en-num font-bold text-[#0F612F] dir-ltr font-mono">{companyInfo.mobileSupport || '09103176904'}</span> ارسال فرمایید.
+                      </p>
+                    </div>
                   </div>
 
                   {/* Message */}
@@ -481,13 +471,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div>
                   <div className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold text-[#0F612F] bg-emerald-50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-md border border-[#0F612F]/20 mb-1">
                     <Share2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0F612F]" />
-                    <span>پیام‌رسان‌ها و ارتباط مستقیم</span>
+                    <span>{messengersConfig.badge}</span>
                   </div>
                   <h3 className="text-sm sm:text-lg font-black text-gray-900">
-                    استعلام سریع، مشاوره فنی و ارسال فایل
+                    {messengersConfig.title}
                   </h3>
                   <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5 font-light">
-                    جهت گفتگوی آنلاین و تبادل نقشه، از طریق درگاه‌های پیام‌رسان زیر با شماره متصل اقدام فرمایید:
+                    {messengersConfig.description}
                   </p>
                 </div>
 
@@ -495,7 +485,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div className="flex items-center gap-2 bg-[#F8FAF9] px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl border border-gray-200/80 self-start sm:self-center shrink-0">
                   <div className="text-right">
                     <span className="text-[9px] sm:text-[10px] text-gray-400 block font-light">شماره متصل:</span>
-                    <span className="text-[11px] sm:text-xs font-black en-num font-mono text-[#0F612F] dir-ltr">09103176904</span>
+                    <span className="text-[11px] sm:text-xs font-black en-num font-mono text-[#0F612F] dir-ltr">{messengersConfig.connectedPhone}</span>
                   </div>
                   <button
                     type="button"
@@ -518,125 +508,44 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* 4 Messengers Grid */}
+              {/* Dynamic Messengers Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3">
-                
-                {/* 1. WhatsApp */}
-                <a
-                  href="https://wa.me/989103176904?text=%D8%B3%D9%84%D8%A7%D9%85%D8%8C%20%D8%AC%D9%87%D8%AA%20%D8%A7%D8%B3%D8%AA%D8%B9%D9%84%D8%A7%D9%85%20%D9%82%DB%8C%D9%85%D8%AA%20%D9%88%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%86%D8%B9%D8%AA%DB%8C%20%D9%BE%DB%8C%D8%A7%D9%85%20%D9%85%DB%8C%E2%80%8C%D8%AF%D9%87%D9%85."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-[#25D366] bg-[#FAFCFA] hover:bg-white transition-all shadow-2xs hover:shadow-md flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-[#25D366]/15 text-[#25D366] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-[#25D366]/30">
-                      {/* WhatsApp SVG Logo */}
-                      <svg className="w-4 h-4 sm:w-6 sm:h-6 fill-[#25D366]" viewBox="0 0 24 24">
-                        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.17 8.17 0 012.41 5.82c0 4.54-3.7 8.24-8.24 8.24-1.44 0-2.85-.38-4.09-1.1l-.29-.17-3.04.8 1.05-2.96-.19-.3a8.16 8.16 0 01-1.25-4.51c0-4.54 3.7-8.24 8.24-8.24zm4.51 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.07-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.54.61.19 1.16.16 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.17-.48-.29z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <h4 className="text-[11px] sm:text-sm font-black text-gray-900 group-hover:text-[#25D366] transition-colors">واتساپ</h4>
-                        <span className="text-[8px] sm:text-[10px] bg-emerald-100 text-[#0F612F] px-1 py-0.2 rounded font-bold hidden sm:inline-block">چت آنلاین</span>
+                {onlineMessengers.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.link || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-[#0F612F] bg-[#FAFCFA] hover:bg-white transition-all shadow-2xs hover:shadow-md flex items-center justify-between group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                      <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-gray-200 shadow-2xs p-1">
+                        <MessengerIconRenderer iconType={item.icon} className="w-5 h-5 sm:w-6 sm:h-6" />
                       </div>
-                      <p className="text-[9px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 font-light hidden sm:block">ارسال سریع فایل و چت آنلاین</p>
-                      <span className="text-[9px] sm:text-[11px] font-mono text-gray-800 font-bold en-num dir-ltr block mt-0.5">09103176904</span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-[#25D366] transition-colors shrink-0" />
-                </a>
-
-                {/* 2. Rubika */}
-                <a
-                  href="https://rubika.ir/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-amber-500/60 bg-[#FCFAFC] hover:bg-white transition-all shadow-2xs hover:shadow-md flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-gray-200 shadow-2xs p-1">
-                      {/* Rubika Official Hexagon 3D Logo */}
-                      <RubikaIcon className="w-full h-full" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <h4 className="text-[11px] sm:text-sm font-black text-gray-900 group-hover:text-purple-700 transition-colors">روبیکا</h4>
-                        <span className="text-[8px] sm:text-[10px] bg-purple-100 text-purple-800 px-1 py-0.2 rounded font-bold hidden sm:inline-block">پیام‌رسان</span>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1 flex-wrap">
+                          <h4 className="text-[11px] sm:text-sm font-black text-gray-900 group-hover:text-[#0F612F] transition-colors truncate">{item.name}</h4>
+                          {item.tag && (
+                            <span className="text-[8px] sm:text-[10px] bg-emerald-100 text-[#0F612F] px-1 py-0.2 rounded font-bold hidden sm:inline-block">
+                              {item.tag}
+                            </span>
+                          )}
+                        </div>
+                        {item.description && (
+                          <p className="text-[9px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 font-light hidden sm:block truncate">
+                            {item.description}
+                          </p>
+                        )}
+                        {item.phone && (
+                          <span className="text-[9px] sm:text-[11px] font-mono text-gray-800 font-bold en-num dir-ltr block mt-0.5">
+                            {item.phone}
+                          </span>
+                        )}
                       </div>
-                      <p className="text-[9px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 font-light hidden sm:block">ارسال پیام و تصویر قطعه</p>
-                      <span className="text-[9px] sm:text-[11px] font-mono text-gray-800 font-bold en-num dir-ltr block mt-0.5">09103176904</span>
                     </div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-purple-600 transition-colors shrink-0" />
-                </a>
-
-                {/* 3. Bale */}
-                <a
-                  href="https://ble.ir/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-[#00A884] bg-[#F7FCFB] hover:bg-white transition-all shadow-2xs hover:shadow-md flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-[#00A884]/15 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-[#00A884]/30">
-                      {/* Bale Messenger SVG Logo */}
-                      <svg className="w-4 h-4 sm:w-6 sm:h-6" viewBox="0 0 36 36" fill="none">
-                        <rect width="36" height="36" rx="9" fill="#00A884" />
-                        <path d="M18 7.5C12.2 7.5 7.5 12.2 7.5 18C7.5 20.1 8.1 22.1 9.2 23.8L8 28.5L12.9 27.4C14.4 28.1 16.2 28.5 18 28.5C23.8 28.5 28.5 23.8 28.5 18C28.5 12.2 23.8 7.5 18 7.5Z" fill="white" />
-                        <path d="M14.5 18.2L16.8 20.5L21.5 15.5" stroke="#00A884" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <h4 className="text-[11px] sm:text-sm font-black text-gray-900 group-hover:text-[#00A884] transition-colors">بله (Bale)</h4>
-                        <span className="text-[8px] sm:text-[10px] bg-teal-100 text-teal-800 px-1 py-0.2 rounded font-bold hidden sm:inline-block">سازمانی</span>
-                      </div>
-                      <p className="text-[9px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 font-light hidden sm:block">تبادل مدارک و استعلام فنی</p>
-                      <span className="text-[9px] sm:text-[11px] font-mono text-gray-800 font-bold en-num dir-ltr block mt-0.5">09103176904</span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-[#00A884] transition-colors shrink-0" />
-                </a>
-
-                {/* 4. Instagram */}
-                <a
-                  href="https://instagram.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-[#E1306C] bg-[#FCF8F9] hover:bg-white transition-all shadow-2xs hover:shadow-md flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-[#E1306C]/15 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-[#E1306C]/30">
-                      {/* Instagram SVG Logo */}
-                      <svg className="w-4 h-4 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
-                        <defs>
-                          <linearGradient id="ig-grad-card" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#f09433" />
-                            <stop offset="25%" stopColor="#e6683c" />
-                            <stop offset="50%" stopColor="#dc2743" />
-                            <stop offset="75%" stopColor="#cc2366" />
-                            <stop offset="100%" stopColor="#bc1888" />
-                          </linearGradient>
-                        </defs>
-                        <rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#ig-grad-card)" />
-                        <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" stroke="white" strokeWidth="1.8" />
-                        <circle cx="12" cy="12" r="3.2" stroke="white" strokeWidth="1.8" />
-                        <circle cx="15.8" cy="8.2" r="0.9" fill="white" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <h4 className="text-[11px] sm:text-sm font-black text-gray-900 group-hover:text-[#E1306C] transition-colors">اینستاگرام</h4>
-                        <span className="text-[8px] sm:text-[10px] bg-rose-100 text-rose-800 px-1 py-0.2 rounded font-bold hidden sm:inline-block">ویدیو</span>
-                      </div>
-                      <p className="text-[9px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 font-light hidden sm:block">مشاهده ویدیوهای خطوط تولید</p>
-                      <span className="text-[9px] sm:text-[11px] font-mono text-gray-800 font-bold en-num dir-ltr block mt-0.5">09103176904</span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-[#E1306C] transition-colors shrink-0" />
-                </a>
-
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 group-hover:text-[#0F612F] transition-colors shrink-0" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>

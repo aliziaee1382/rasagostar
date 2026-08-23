@@ -10,7 +10,9 @@ import {
   ThemeSettings,
   HeroSlide,
   PagesContentData,
-  ComplementaryService
+  ComplementaryService,
+  OnlineMessengerItem,
+  MessengersSectionConfig
 } from '../types';
 
 export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
@@ -379,6 +381,9 @@ export const SERVICES_DATA: ServiceDetail[] = [
     materials: ['فولادهای ابزار و قالب‌سازی آلیاژی', 'بلوک‌های استاندارد قالب', 'مس و گرافیت اسپارک', 'سنبه و ماتریس‌های سختکاری‌شده'],
     equipmentList: ['دستگاه اسپارک دقیق', 'سنگ مغناطیسی', 'دریل رادیال', 'انواع دستگاه فرز', 'انواع دستگاه تراش صنعتی'],
     image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
+    secondaryImage: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1000&q=80',
+    imageCaption: 'کارگاه قالب‌سازی و ماشین‌کاری دقیق CNC و اسپارک',
+    secondaryImageCaption: 'تست انطباق و مونتاژ سنبه و ماتریس در محل کارخانه',
   },
   {
     id: 'stamping',
@@ -401,6 +406,9 @@ export const SERVICES_DATA: ServiceDetail[] = [
     materials: ['ورق‌های روغنی (DC01, DC04)', 'ورق‌های گالوانیزه و سیاه (ST37, ST52)', 'ورق‌های استنلس استیل (304, 316)', 'ورق‌های آلومینیوم و برنج'],
     equipmentList: ['پرس‌های ضربه‌ای (لنگ) ۳ الی ۱۲۰ تن', 'پرس‌های هیدرولیک ۱۵۰ و ۲۵۰ تن', 'پرس هیدرولیک سنگین ۴۰۰ تن', 'فیدر و تجهیزات رول‌بازکن خودکار'],
     image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1000&q=80',
+    secondaryImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80',
+    imageCaption: 'خطوط پرس سنگین هیدرولیک و ضربه‌ای تا ۴۰۰ تن',
+    secondaryImageCaption: 'تولید انبوه و کشش عمیق قطعات صنعتی فلزی',
   },
   {
     id: 'laser_cutting',
@@ -423,6 +431,9 @@ export const SERVICES_DATA: ServiceDetail[] = [
     materials: ['ورق‌های سیاه و روغنی آهن تا ۲۰mm', 'ورق‌های استیل ضدزنگ ۳۰۴ و ۳۱۶', 'ورق‌های آلومینیوم آلیاژی', 'ورق‌های گالوانیزه و برنج'],
     equipmentList: ['دستگاه برش لیزر فایبر با میز ۲×۶ متر', 'سیستم گاز کمکی نیتروژن و اکسیژن با خلوص بالا', 'نرم‌افزار هوشمند چیدمان قطعات (Nesting)', 'جرثقیل سقفی بارگیری شیت‌های سنگین'],
     image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1000&q=80',
+    secondaryImage: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=1000&q=80',
+    imageCaption: 'دستگاه برش لیزر فایبر پرقدرت با میز ۲ در ۶ متر',
+    secondaryImageCaption: 'برش فوق‌دقیق بدون پلیسه و آماده‌سازی جهت پرسکاری و جوشکاری',
   },
   {
     id: 'plastic_injection',
@@ -445,6 +456,9 @@ export const SERVICES_DATA: ServiceDetail[] = [
     materials: ['پلی‌آمید ساده و الیاف‌دار (PA6, PA66)', 'پلی‌استال (POM)', 'پلی‌کربنات (PC)', 'ای‌بی‌اس (ABS)', 'پلی‌پروپیلن (PP)', 'پلی‌اتیلن (PE)'],
     equipmentList: ['۲ دستگاه تزریق پلاستیک برند Battenfeld (تا ۲۰۰ گرم)', 'چیلر صنعتی خنک‌کننده قالب', 'دستگاه گازگیر و رطوبت‌زدای اتوماتیک مواد', 'آسیاب و تجهیزات بازیافت راهگاه'],
     image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=80',
+    secondaryImage: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1000&q=80',
+    imageCaption: 'دستگاه‌های تزریق پلاستیک مدرن Battenfeld آلمان',
+    secondaryImageCaption: 'تولید دقیق قطعات پلیمری مهندسی و خودرویی تا ۲۰۰ گرم',
   },
 ];
 
@@ -854,6 +868,82 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
   },
 ];
 
+export const DEFAULT_MESSENGERS_SECTION: MessengersSectionConfig = {
+  badge: 'پیام‌رسان‌ها و ارتباط مستقیم',
+  title: 'استعلام سریع، مشاوره فنی و ارسال فایل',
+  description: 'جهت گفتگوی آنلاین و تبادل نقشه، از طریق درگاه‌های پیام‌رسان زیر با شماره متصل اقدام فرمایید:',
+  connectedPhone: '09103176904',
+};
+
+export const DEFAULT_ONLINE_MESSENGERS: OnlineMessengerItem[] = [
+  {
+    id: 'whatsapp',
+    name: 'واتساپ',
+    tag: 'چت آنلاین',
+    description: 'ارسال سریع فایل و چت آنلاین',
+    phone: '09103176904',
+    link: 'https://wa.me/989103176904?text=%D8%B3%D9%84%D8%A7%D9%85%D8%8C%20%D8%AC%D9%87%D8%AA%20%D8%A7%D8%B3%D8%AA%D8%B9%D9%84%D8%A7%D9%85%20%D9%82%DB%8C%D9%85%D8%AA%20%D9%88%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%86%D8%B9%D8%AA%DB%8C%20%D9%BE%DB%8C%D8%A7%D9%85%20%D9%85%DB%8C%E2%80%8C%D8%AF%D9%87%D9%85.',
+    icon: 'whatsapp',
+    isActive: true,
+    order: 1,
+  },
+  {
+    id: 'rubika',
+    name: 'روبیکا',
+    tag: 'پیام‌رسان',
+    description: 'ارسال پیام و تصویر قطعه',
+    phone: '09103176904',
+    link: 'https://rubika.ir/',
+    icon: 'rubika',
+    isActive: true,
+    order: 2,
+  },
+  {
+    id: 'bale',
+    name: 'بله (Bale)',
+    tag: 'سازمانی',
+    description: 'تبادل مدارک و استعلام فنی',
+    phone: '09103176904',
+    link: 'https://ble.ir/',
+    icon: 'bale',
+    isActive: true,
+    order: 3,
+  },
+  {
+    id: 'instagram',
+    name: 'اینستاگرام',
+    tag: 'ویدیو',
+    description: 'مشاهده ویدیوهای خطوط تولید',
+    phone: '09103176904',
+    link: 'https://instagram.com/',
+    icon: 'instagram',
+    isActive: true,
+    order: 4,
+  },
+  {
+    id: 'eitaa',
+    name: 'ایتا (Eitaa)',
+    tag: 'پیام‌رسان ایرانی',
+    description: 'مشاوره و ارسال نقشه‌های فنی',
+    phone: '09103176904',
+    link: 'https://eitaa.com/',
+    icon: 'eitaa',
+    isActive: false,
+    order: 5,
+  },
+  {
+    id: 'telegram',
+    name: 'تلگرام (Telegram)',
+    tag: 'ارسال فایل حجیم',
+    description: 'تبادل نقشه‌ها و فایل‌های سنگین مهندسی',
+    phone: '09103176904',
+    link: 'https://t.me/',
+    icon: 'telegram',
+    isActive: false,
+    order: 6,
+  }
+];
+
 export const DEFAULT_SITE_DATA: SiteContentData = {
   themeSettings: DEFAULT_THEME_SETTINGS,
   heroSlides: DEFAULT_HERO_SLIDES,
@@ -868,5 +958,7 @@ export const DEFAULT_SITE_DATA: SiteContentData = {
   integratedProcessSteps: INTEGRATED_PROCESS_STEPS,
   productionChainSteps: PRODUCTION_CHAIN_STEPS,
   timelineMilestones: TIMELINE_MILESTONES,
+  onlineMessengers: DEFAULT_ONLINE_MESSENGERS,
+  messengersConfig: DEFAULT_MESSENGERS_SECTION,
 };
 

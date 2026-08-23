@@ -15,6 +15,9 @@ export interface ServiceDetail {
   materials: string[];
   equipmentList: string[];
   image: string;
+  secondaryImage?: string;
+  imageCaption?: string;
+  secondaryImageCaption?: string;
 }
 
 export interface PortfolioItem {
@@ -228,6 +231,26 @@ export interface PagesContentData {
   contact: ContactPageContent;
 }
 
+export interface OnlineMessengerItem {
+  id: string;
+  name: string;
+  tag: string;
+  description: string;
+  phone: string;
+  link: string;
+  icon: 'whatsapp' | 'rubika' | 'bale' | 'instagram' | 'telegram' | 'eitaa' | 'phone' | 'link' | string;
+  color?: string;
+  isActive: boolean;
+  order?: number;
+}
+
+export interface MessengersSectionConfig {
+  badge: string;
+  title: string;
+  description: string;
+  connectedPhone: string;
+}
+
 export interface SiteContentData {
   themeSettings: ThemeSettings;
   heroSlides: HeroSlide[];
@@ -242,6 +265,8 @@ export interface SiteContentData {
   integratedProcessSteps: IntegratedProcessStep[];
   productionChainSteps: ProductionChainStep[];
   timelineMilestones: TimelineMilestone[];
+  onlineMessengers?: OnlineMessengerItem[];
+  messengersConfig?: MessengersSectionConfig;
 }
 
 export type MessageStatus = 'new' | 'read' | 'reviewed' | 'approved' | 'confirmed';

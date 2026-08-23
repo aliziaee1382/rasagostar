@@ -284,7 +284,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
           {/* Continuous Moving Slider Track */}
           <div 
-            className="overflow-x-auto no-scrollbar relative py-1 sm:py-2"
+            className="overflow-hidden relative py-1 sm:py-2"
           >
             <div 
               className="flex gap-2 sm:gap-4 w-max animate-marquee-continuous"

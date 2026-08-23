@@ -268,24 +268,46 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
             </div>
 
             {/* Right/Image Column */}
-            <div className="lg:col-span-5 space-y-3 sm:space-y-6">
-              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-md sm:shadow-lg border sm:border-2 border-gray-200 bg-gray-900 group">
+            <div className="lg:col-span-5 space-y-3 sm:space-y-4">
+              {/* 1st Primary Image */}
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-md sm:shadow-lg border sm:border-2 border-gray-200 bg-gray-900 group aspect-square">
                 <img 
                   src={selectedServiceData.image} 
                   alt={selectedServiceData.title}
                   referrerPolicy="no-referrer"
-                  className="w-full h-48 sm:h-[380px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 left-3 sm:left-4 text-right">
-                  <span className="text-[10px] sm:text-xs font-black text-[#DECA19] block mb-0.5 sm:mb-1">کارخانه رسا قطعه گستر مهر</span>
+                <div className="absolute bottom-2.5 sm:bottom-3 right-3 sm:right-4 left-3 sm:left-4 text-right">
+                  <span className="text-[10px] sm:text-xs font-black text-[#DECA19] block mb-0.5">
+                    {selectedServiceData.imageCaption || 'کارخانه رسا قطعه گستر مهر'}
+                  </span>
                   <p className="text-white text-[10px] sm:text-xs font-light leading-relaxed">
                     سالن تولید ۱۲۰۰ متری مجهز به پرس‌های ۳ تا ۴۰۰ تن، Battenfeld آلمان و برش لیزر
                   </p>
                 </div>
               </div>
 
-              {/* Key Advantage Box */}
+              {/* 2nd Secondary Image (Same shape and size right below the 1st image) */}
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-md sm:shadow-lg border sm:border-2 border-gray-200 bg-gray-900 group aspect-square">
+                <img 
+                  src={selectedServiceData.secondaryImage || selectedServiceData.image} 
+                  alt={`${selectedServiceData.title} - تصویر دوم`}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                <div className="absolute bottom-2.5 sm:bottom-3 right-3 sm:right-4 left-3 sm:left-4 text-right">
+                  <span className="text-[10px] sm:text-xs font-black text-[#DECA19] block mb-0.5">
+                    {selectedServiceData.secondaryImageCaption || 'خطوط تولید و فرآیندهای تکمیلی'}
+                  </span>
+                  <p className="text-white text-[10px] sm:text-xs font-light leading-relaxed">
+                    تولید دقیق قطعات صنعتی مطابق نقشه و نمونه با کنترل کیفی مستمر
+                  </p>
+                </div>
+              </div>
+
+              {/* Key Advantage Box - Now placed directly below the 2nd image */}
               <div className="bg-[#0c2214] text-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DECA19]/40 space-y-2 sm:space-y-3 shadow-md">
                 <h4 className="text-[11px] sm:text-sm font-black text-[#DECA19] flex items-center gap-1.5 sm:gap-2">
                   <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#DECA19]" />

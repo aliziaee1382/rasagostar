@@ -361,6 +361,17 @@ export const PagesContentTab: React.FC = () => {
               className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
             />
           </div>
+
+          {/* Quick Notice for Messengers tab */}
+          <div className="p-4 bg-emerald-50/80 rounded-xl border border-emerald-200/60 flex items-center justify-between gap-3 mt-4">
+            <div className="text-right">
+              <span className="text-xs font-bold text-gray-900 block">مدیریت کارت پیام‌رسان‌ها و چت آنلاین</span>
+              <span className="text-[11px] text-gray-600 font-light">جهت تغییر عناوین، شماره‌ها، تگ‌ها و لینک پیام‌رسان‌ها به تب اختصاصی «پیام‌رسان‌ها و درگاه‌های چت» در منوی کناری مراجعه فرمایید.</span>
+            </div>
+            <span className="px-2.5 py-1 bg-[#0F612F] text-[#DECA19] text-[10px] font-bold rounded-lg shrink-0">
+              تب پیام‌رسان‌ها
+            </span>
+          </div>
         </div>
       )}
 
