@@ -32,7 +32,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: 'مدیریت یکپارچه زنجیره تولید صنعتی',
     subtitle: 'از ایده و طراحی CAD/CAM تا ساخت قالب، پرسکاری ۴۰۰ تن و تحویل قطعه نهایی',
     badge: 'بیش از ۴۰ سال سابقه درخشان در صنعت',
-    tagline: 'تجربه، تخصص و توانمندی در خدمت تولید ملی',
+    tagline: 'از طراحی نقشه تا محصول نهایی همه یک جا',
     slogan: 'زنجیره یکپارچه از ساخت قالب تا تولید انبوه قطعات فلزی و پلیمری',
     description: 'کارخانه رسا قطعه گستر مهر (ثبت ۱۸۷۶) با بهره‌گیری از ماشین‌آلات پیشرفته CNC، پرس‌های سنگین هیدرولیک و ضربه‌ای تا ۴۰۰ تن و دستگاه‌های تزریق مدرن، زنجیره کامل تولید را زیر یک سقف فراهم آورده است.',
     bgImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=2000&q=80',
@@ -197,7 +197,7 @@ export const COMPLEMENTARY_SERVICES: ComplementaryService[] = [
 export const COMPANY_INFO = {
   name: 'رسا قطعه گستر مهر',
   nameEn: 'Rasa Qateh Gostar Mehr',
-  slogan: '«تجربه، تخصص و توانمندی در خدمت تولید»',
+  slogan: 'از طراحی نقشه تا محصول نهایی',
   subSlogan: 'مدیریت یکپارچه زنجیره تولید از طراحی و ساخت قالب تا تولید و تحویل قطعه نهایی',
   registrationNumber: '1876',
   experienceYears: '40+',

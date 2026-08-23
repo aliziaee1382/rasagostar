@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5 text-gray-300">
               <Phone className="w-3.5 h-3.5 text-[#DECA19]" />
-              <span className="font-semibold text-white">تماس واحد فروش:</span>
+              <span className="font-semibold text-white">شماره تماس:</span>
               <span className="en-num font-bold text-white tracking-wide">{companyInfo.phone}</span>
             </span>
             <span className="flex items-center gap-1.5 text-gray-300">

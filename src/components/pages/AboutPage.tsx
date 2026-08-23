@@ -92,7 +92,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-[#DECA19] rounded-full mb-2.5 sm:mb-4" />
           
           <p className="text-xs sm:text-base text-emerald-100 font-bold mb-1.5 sm:mb-2">
-            شعار محوری: <span className="text-[#DECA19]">«{aboutContent.headline}»</span>
+            شعار کارخانه: <span className="text-[#DECA19]">«{companyInfo.slogan || 'از طراحی نقشه تا محصول نهایی'}»</span>
           </p>
 
           <p className="text-[11px] sm:text-sm text-gray-300 max-w-3xl leading-relaxed font-light">
