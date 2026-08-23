@@ -6,12 +6,11 @@ import { Footer } from './components/Footer';
 import { HomePage } from './components/pages/HomePage';
 import { AboutPage } from './components/pages/AboutPage';
 import { ServicesPage } from './components/pages/ServicesPage';
-import { PortfolioPage } from './components/pages/PortfolioPage';
 import { ContactPage } from './components/pages/ContactPage';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { AdminDashboardModal } from './components/admin/AdminDashboardModal';
-import { Shield, Sparkles } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 function MainApp() {
   const [activePage, setActivePage] = useState<PageId>('home');
@@ -28,8 +27,10 @@ function MainApp() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      if (['home', 'about', 'services', 'portfolio', 'contact'].includes(hash)) {
+      if (['home', 'about', 'services', 'contact'].includes(hash)) {
         setActivePage(hash as PageId);
+      } else if (hash === 'portfolio') {
+        setActivePage('services');
       } else if (hash === 'admin') {
         if (adminUser) {
           setIsDashboardModalOpen(true);
@@ -45,18 +46,15 @@ function MainApp() {
   }, [adminUser]);
 
   const navigateTo = (page: PageId) => {
-    setActivePage(page);
-    window.location.hash = page;
+    const targetPage = page === 'portfolio' ? 'services' : page;
+    setActivePage(targetPage);
+    window.location.hash = targetPage;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenService = (serviceId: ServiceCategory) => {
     setServicePageInitialTab(serviceId);
     navigateTo('services');
-  };
-
-  const handleSelectPortfolioItem = (item: PortfolioItem) => {
-    setSelectedProduct(item);
   };
 
   const handleOrderThisItem = (_item: PortfolioItem) => {
@@ -96,7 +94,6 @@ function MainApp() {
           <HomePage
             onNavigate={navigateTo}
             onOpenService={handleOpenService}
-            onSelectPortfolioItem={handleSelectPortfolioItem}
           />
         )}
 
@@ -110,13 +107,6 @@ function MainApp() {
           <ServicesPage
             onNavigate={navigateTo}
             initialSelectedService={servicePageInitialTab}
-          />
-        )}
-
-        {activePage === 'portfolio' && (
-          <PortfolioPage
-            onNavigate={navigateTo}
-            onSelectPortfolioItem={handleSelectPortfolioItem}
           />
         )}
 
@@ -139,7 +129,7 @@ function MainApp() {
         }}
       />
 
-      {/* Product Detail Modal */}
+      {/* Product Detail Modal (if triggered) */}
       <ProductDetailModal
         item={selectedProduct}
         onClose={() => setSelectedProduct(null)}

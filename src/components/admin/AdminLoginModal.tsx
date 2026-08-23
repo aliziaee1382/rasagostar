@@ -5,13 +5,15 @@ import { ShieldCheck, Lock, User, Eye, EyeOff, AlertCircle, CheckCircle2, X } fr
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccessOpenDashboard: () => void;
+  onSuccessOpenDashboard?: () => void;
+  onLoginSuccess?: () => void;
 }
 
 export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   isOpen,
   onClose,
   onSuccessOpenDashboard,
+  onLoginSuccess,
 }) => {
   const { login } = useData();
   const [username, setUsername] = useState('');
@@ -41,7 +43,8 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
       setSuccessMsg(result.message);
       setTimeout(() => {
         onClose();
-        onSuccessOpenDashboard();
+        if (onLoginSuccess) onLoginSuccess();
+        if (onSuccessOpenDashboard) onSuccessOpenDashboard();
       }, 700);
     } else {
       setErrorMsg(result.message);
@@ -49,55 +52,55 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
       <div 
-        className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border-2 border-[#0F612F] text-right"
+        className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border-2 border-[#0F612F] text-right"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#0c2214] to-[#12331f] text-white p-6 relative border-b-4 border-[#DECA19]">
+        <div className="bg-gradient-to-r from-[#0c2214] to-[#12331f] text-white p-4 sm:p-6 relative border-b-4 border-[#DECA19]">
           <button
             onClick={onClose}
-            className="absolute top-4 left-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors cursor-pointer"
+            className="absolute top-3 left-3 sm:top-4 sm:left-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors cursor-pointer"
             aria-label="بستن"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#DECA19] text-gray-950 flex items-center justify-center font-black">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="flex items-center gap-2.5 sm:gap-3 mb-1.5 sm:mb-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#DECA19] text-gray-950 flex items-center justify-center font-black">
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-black text-white">ورود به پنل مدیریت محتوا</h3>
-              <span className="text-[11px] text-[#DECA19] font-mono">Rasa Qateh CMS • cPanel & Database</span>
+              <h3 className="text-base sm:text-lg font-black text-white">ورود به پنل مدیریت محتوا</h3>
+              <span className="text-[10px] sm:text-[11px] text-[#DECA19] font-mono">Rasa Qateh CMS • cPanel & Database</span>
             </div>
           </div>
-          <p className="text-xs text-gray-300 font-light">
+          <p className="text-[11px] sm:text-xs text-gray-300 font-light">
             دسترسی اختصاصی مدیریت محتوا و به‌روزرسانی زنده اطلاعات کارخانه
           </p>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-3 sm:space-y-4">
           
           {errorMsg && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
+            <div className="p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMsg}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
+            <div className="p-2.5 sm:p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
 
           {/* Username */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-gray-700">نام کاربری ادمین</label>
+          <div className="space-y-1 sm:space-y-1.5">
+            <label className="block text-[11px] sm:text-xs font-bold text-gray-700">نام کاربری ادمین</label>
             <div className="relative">
               <input
                 type="text"
@@ -105,7 +108,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="aliziaee1382"
-                className="w-full px-4 py-2.5 pl-10 rounded-xl border border-gray-300 focus:border-[#0F612F] focus:ring-2 focus:ring-[#0F612F]/20 text-sm font-mono transition-all text-left outline-none"
+                className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 pl-9 sm:pl-10 rounded-xl border border-gray-300 focus:border-[#0F612F] focus:ring-2 focus:ring-[#0F612F]/20 text-xs sm:text-sm font-mono transition-all text-left outline-none"
                 autoFocus
               />
               <User className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -113,8 +116,8 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           </div>
 
           {/* Password */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-gray-700">کلمه عبور امنیتی</label>
+          <div className="space-y-1 sm:space-y-1.5">
+            <label className="block text-[11px] sm:text-xs font-bold text-gray-700">کلمه عبور امنیتی</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -122,7 +125,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-4 py-2.5 pl-10 pr-10 rounded-xl border border-gray-300 focus:border-[#0F612F] focus:ring-2 focus:ring-[#0F612F]/20 text-sm font-mono transition-all text-left outline-none"
+                className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 pl-9 sm:pl-10 pr-9 sm:pr-10 rounded-xl border border-gray-300 focus:border-[#0F612F] focus:ring-2 focus:ring-[#0F612F]/20 text-xs sm:text-sm font-mono transition-all text-left outline-none"
               />
               <Lock className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <button
@@ -137,14 +140,14 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           </div>
 
           {/* Submit Button */}
-          <div className="pt-2">
+          <div className="pt-1.5 sm:pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#0F612F] hover:bg-[#0c4e26] text-white py-3 px-4 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 disabled:opacity-70"
+              className="w-full bg-[#0F612F] hover:bg-[#0c4e26] text-white py-2.5 sm:py-3 px-4 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 disabled:opacity-70"
             >
               {loading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
                   <ShieldCheck className="w-4 h-4 text-[#DECA19]" />
@@ -154,8 +157,8 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             </button>
           </div>
 
-          <div className="text-center pt-2">
-            <span className="text-[11px] text-gray-400">
+          <div className="text-center pt-1 sm:pt-2">
+            <span className="text-[10px] sm:text-[11px] text-gray-400">
               سامانه احراز هویت متصل به توکن امنیتی سرور
             </span>
           </div>

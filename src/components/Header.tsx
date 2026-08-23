@@ -134,35 +134,35 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out">
         <div className={`flex items-center justify-between transition-all duration-300 ease-in-out ${
-          isScrolled ? 'h-14 sm:h-16' : 'h-20'
+          isScrolled ? 'h-12 sm:h-16' : 'h-14 sm:h-20'
         }`}>
           
           {/* Logo & Company Identity Area */}
           <div 
             id="brand-logo-container" 
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group transition-all duration-300"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer group transition-all duration-300"
           >
             <div className="relative flex items-center justify-center text-[#0F612F] group-hover:text-[#0c4e26] transition-colors">
               <Logo 
                 className={`w-auto object-contain transition-all duration-300 ease-in-out group-hover:scale-105 ${
-                  isScrolled ? 'h-8 sm:h-9' : 'h-11 sm:h-12'
+                  isScrolled ? 'h-7 sm:h-9' : 'h-8 sm:h-11 md:h-12'
                 }`}
                 fillColor="#0F612F"
               />
             </div>
 
             <div className="flex flex-col transition-all duration-300 ease-in-out">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <span className={`font-black text-[#0F612F] tracking-tight transition-all duration-300 ease-in-out ${
-                  isScrolled ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'
+                  isScrolled ? 'text-sm sm:text-lg md:text-xl' : 'text-base sm:text-xl md:text-2xl'
                 }`}>
                   رسا قطعه گستر مهر
                 </span>
               </div>
-              <span className={`text-[11px] text-gray-500 font-medium hidden sm:inline-block transition-all duration-300 ease-in-out overflow-hidden ${
+              <span className={`text-[10px] sm:text-[11px] text-gray-500 font-medium hidden sm:inline-block transition-all duration-300 ease-in-out overflow-hidden ${
                 isScrolled ? 'max-h-0 opacity-0 -translate-y-1' : 'max-h-6 opacity-100 translate-y-0'
               }`}>
                 طراحی و ساخت قالب • پرسکاری تا <span className="en-num font-bold">400</span> تن • تزریق پلاستیک • برش لیزر
@@ -200,20 +200,20 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
             <a
               href={`tel:${companyInfo.phoneTel || '02176266543'}`}
-              className={`bg-[#0F612F] text-white rounded-lg font-bold flex items-center justify-center shadow-sm transition-all duration-300 ${
-                isScrolled ? 'p-1.5 text-xs' : 'p-2 text-xs'
+              className={`bg-[#0F612F] text-white rounded-lg font-bold flex items-center justify-center shadow-xs transition-all duration-300 ${
+                isScrolled ? 'p-1.5 text-xs' : 'p-1.5 sm:p-2 text-xs'
               }`}
               title="تماس با کارخانه"
             >
-              <Phone className={`text-[#DECA19] transition-all duration-300 ${isScrolled ? 'w-3.5 h-3.5' : 'w-4 h-4'}`} />
+              <Phone className={`text-[#DECA19] transition-all duration-300 ${isScrolled ? 'w-3.5 h-3.5' : 'w-3.5 h-3.5 sm:w-4 sm:h-4'}`} />
             </a>
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 sm:p-2 rounded-lg text-gray-700 hover:text-[#0F612F] hover:bg-gray-100/70 focus:outline-none transition-colors"
+              className="p-1 sm:p-2 rounded-lg text-gray-700 hover:text-[#0F612F] hover:bg-gray-100/70 focus:outline-none transition-colors"
               aria-label="باز کردن منو"
             >
               {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
@@ -225,9 +225,9 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer / Dropdown */}
       {mobileMenuOpen && (
-        <div id="mobile-menu-drawer" className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-gray-200 px-4 pt-2 pb-6 space-y-2 shadow-xl animate-fadeIn">
-          <div className="py-2 border-b border-gray-100 mb-2">
-            <span className="text-xs text-gray-500 font-semibold block mb-1">صفحات وب‌سایت:</span>
+        <div id="mobile-menu-drawer" className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-gray-200 px-3.5 pt-1.5 pb-4 space-y-1.5 shadow-xl animate-fadeIn">
+          <div className="py-1.5 border-b border-gray-100 mb-1">
+            <span className="text-[11px] text-gray-500 font-semibold block">صفحات وب‌سایت:</span>
           </div>
           {navItems.map((item) => {
             const isActive = activePage === item.id;
@@ -237,29 +237,29 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 id={`mobile-nav-${item.id}`}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-right text-sm font-bold transition-colors
+                className={`w-full flex items-center justify-between px-3 py-2 sm:py-3 rounded-lg text-right text-xs sm:text-sm font-bold transition-colors
                   ${isActive 
                     ? 'bg-[#0F612F] text-white' 
                     : 'text-gray-800 hover:bg-emerald-50 hover:text-[#0F612F]'
                   }
                 `}
               >
-                <div className="flex items-center gap-2.5">
-                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-[#DECA19]' : 'text-gray-500'}`} />
+                <div className="flex items-center gap-2">
+                  <IconComponent className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isActive ? 'text-[#DECA19]' : 'text-gray-500'}`} />
                   <span>{item.label}</span>
                 </div>
-                <ChevronLeft className={`w-4 h-4 ${isActive ? 'text-[#DECA19]' : 'text-gray-400'}`} />
+                <ChevronLeft className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isActive ? 'text-[#DECA19]' : 'text-gray-400'}`} />
               </button>
             );
           })}
 
-          <div className="pt-4 border-t border-gray-100 flex flex-col gap-2">
+          <div className="pt-2.5 border-t border-gray-100 flex flex-col gap-1.5">
             <a 
               href={`tel:${companyInfo.phoneTel || '02176266543'}`}
-              className="w-full flex items-center justify-center gap-2 bg-[#0F612F] text-white py-3 rounded-lg text-xs font-bold transition-colors shadow-md"
+              className="w-full flex items-center justify-center gap-1.5 bg-[#0F612F] text-white py-2 sm:py-3 rounded-lg text-[11px] sm:text-xs font-bold transition-colors shadow-xs"
             >
-              <Phone className="w-4 h-4 text-[#DECA19]" />
-              <span>تماس مستقیم با کارخانه: <span className="en-num font-bold">{companyInfo.phone}</span></span>
+              <Phone className="w-3.5 h-3.5 text-[#DECA19]" />
+              <span>تماس مستقیم: <span className="en-num font-bold">{companyInfo.phone}</span></span>
             </a>
           </div>
         </div>
