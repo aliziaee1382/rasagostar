@@ -572,6 +572,20 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return { success: true, message: 'ورود موفقیت‌آمیز به پنل مدیریت.' };
     }
 
+    if (username.trim() === 'abotalebirasagostar' && password.trim() === 'rasaabotalebi2020rasa') {
+      const mockToken = 'mock_jwt_token_' + Date.now() + '_' + Math.random().toString(36).substring(7);
+      const userObj: AdminUser = {
+        username: 'abotalebirasagostar',
+        displayName: 'مدیر شرکت (آقای ابوطالبی)',
+        role: 'superadmin'
+      };
+      setAuthToken(mockToken);
+      setAdminUser(userObj);
+      localStorage.setItem(STORAGE_KEY_TOKEN, mockToken);
+      localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(userObj));
+      return { success: true, message: 'ورود موفقیت‌آمیز به پنل مدیریت.' };
+    }
+
     return { success: false, message: 'نام کاربری یا رمز عبور اشتباه است.' };
   };
 

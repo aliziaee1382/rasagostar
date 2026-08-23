@@ -147,7 +147,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                 </span>
               </div>
               <p className="text-xs text-gray-300">
-                کاربر جاری: <strong className="text-white">{adminUser?.displayName || 'مدیریت کارخانه'}</strong> ({adminUser?.username || 'aliziaee1382'})
+                کاربر جاری: <strong className="text-white">{adminUser?.displayName || 'مدیریت کارخانه'}</strong> {adminUser?.username ? `(${adminUser.username})` : ''}
               </p>
             </div>
           </div>

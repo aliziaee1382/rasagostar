@@ -107,7 +107,8 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
                 dir="ltr"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="aliziaee1382"
+                placeholder="نام کاربری خود را وارد کنید"
+                autoComplete="off"
                 className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 pl-9 sm:pl-10 rounded-xl border border-gray-300 focus:border-[#0F612F] focus:ring-2 focus:ring-[#0F612F]/20 text-xs sm:text-sm font-mono transition-all text-left outline-none"
                 autoFocus
               />

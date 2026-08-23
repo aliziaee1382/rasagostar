@@ -4,9 +4,19 @@
  */
 require_once __DIR__ . '/db.php';
 
-// Admin Credentials
-define('ADMIN_USERNAME', 'aliziaee1382');
-define('ADMIN_PASSWORD', 'ali13821382ali');
+// Admin Accounts
+$ADMIN_ACCOUNTS = [
+    'aliziaee1382' => [
+        'password' => 'ali13821382ali',
+        'displayName' => 'مدیریت کارخانه (علی ضیائی)',
+        'role' => 'superadmin'
+    ],
+    'abotalebirasagostar' => [
+        'password' => 'rasaabotalebi2020rasa',
+        'displayName' => 'مدیر شرکت (آقای ابوطالبی)',
+        'role' => 'superadmin'
+    ]
+];
 define('JWT_SECRET_KEY', 'RasaQateh_SecureSecretKey_2026_cPanel!#%98');
 
 /**
@@ -121,16 +131,17 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'auth.php') {
         $username = isset($input['username']) ? trim($input['username']) : '';
         $password = isset($input['password']) ? trim($input['password']) : '';
 
-        if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+        if (isset($ADMIN_ACCOUNTS[$username]) && $ADMIN_ACCOUNTS[$username]['password'] === $password) {
             $token = generateToken($username);
+            $account = $ADMIN_ACCOUNTS[$username];
             echo json_encode([
                 'success' => true,
                 'message' => 'ورود با موفقیت انجام شد.',
                 'token' => $token,
                 'user' => [
-                    'username' => ADMIN_USERNAME,
-                    'displayName' => 'مدیر ارشد کارخانه (علی ضیائی)',
-                    'role' => 'superadmin'
+                    'username' => $username,
+                    'displayName' => $account['displayName'],
+                    'role' => $account['role']
                 ]
             ], JSON_UNESCAPED_UNICODE);
             exit;
