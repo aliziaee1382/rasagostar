@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Vazirmatn', 'Inter', system-ui, -apple-system, sans-serif;
+    /* Ensure English/Latin digits (0-9) are rendered in English glyphs rather than Persian glyph substitutions */
+    font-feature-settings: "ss01" 0, "ss02" 0;
+  }
+}
+
+.en-num {
+  font-family: 'Inter', 'Chakra Petch', system-ui, -apple-system, sans-serif;
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  display: inline-block;
+  text-align: left;
+}
+
+.en-tech-num {
+  font-family: 'Chakra Petch', 'Inter', monospace, sans-serif;
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  display: inline-block;
+  text-align: left;
+}

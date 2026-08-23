@@ -1,0 +1,8 @@
+{
+  "name": "Remix رسا قطعه گستر مهر",
+  "description": "وب‌سایت شرکتی و صنعتی کارخانه رسا قطعه گستر مهر؛ متخصص در طراحی و ساخت انواع قالب‌های صنعتی، پرسکاری تا 400 تن، تزریق پلاستیک و برش لیزر با بیش از 40 سال سابقه درخشان.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
