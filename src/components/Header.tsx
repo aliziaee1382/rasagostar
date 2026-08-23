@@ -31,20 +31,49 @@ export const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
 
 
-  // Monitor scroll position to apply glassmorphism and size changes
+  // Monitor scroll position with 3-second delay when returning to top
   useEffect(() => {
+    let topTimer: ReturnType<typeof setTimeout> | null = null;
+
     const handleScroll = () => {
-      if (window.scrollY > 25) {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > 40) {
+        if (topTimer) {
+          clearTimeout(topTimer);
+          topTimer = null;
+        }
         setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+      } else if (currentScrollY <= 10) {
+        // If scrolled and reached the very top, wait 3 seconds before expanding the top bar
+        setIsScrolled((prevScrolled) => {
+          if (prevScrolled && !topTimer) {
+            topTimer = setTimeout(() => {
+              if (window.scrollY <= 10) {
+                setIsScrolled(false);
+              }
+              topTimer = null;
+            }, 3000);
+            return true; // keep compact state during the 3-second wait
+          }
+          return prevScrolled;
+        });
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    
+    // Initial check
+    if (window.scrollY > 40) {
+      setIsScrolled(true);
+    }
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (topTimer) {
+        clearTimeout(topTimer);
+      }
+    };
   }, []);
 
   const navItems = [
@@ -63,19 +92,19 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header 
       id="main-header" 
-      className={`sticky top-0 z-50 transition-all duration-300 ease-in-out ${
+      className={`sticky top-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled 
           ? 'bg-white/80 backdrop-blur-xl shadow-md border-b border-gray-200/70' 
           : 'bg-white/95 backdrop-blur-md shadow-xs border-b border-gray-200'
       }`}
     >
-      {/* Top Notification & Contact Bar (Smoothly collapses on scroll) */}
+      {/* Top Notification & Contact Bar (Smoothly collapses on scroll, reappears after 3s at top) */}
       <div 
         id="top-contact-bar" 
-        className={`bg-[#0c2214] text-gray-200 text-xs px-4 border-b border-[#DECA19]/20 hidden md:block transition-all duration-300 ease-in-out overflow-hidden ${
+        className={`bg-[#0c2214] text-gray-200 text-xs px-4 border-b border-[#DECA19]/20 hidden md:block transition-all duration-500 ease-in-out overflow-hidden ${
           isScrolled 
             ? 'max-h-0 opacity-0 py-0 border-b-0 pointer-events-none' 
-            : 'max-h-12 opacity-100 py-2'
+            : 'max-h-16 opacity-100 py-2'
         }`}
       >
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
