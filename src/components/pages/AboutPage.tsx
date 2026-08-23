@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageId } from '../../types';
-import { COMPANY_INFO, TIMELINE_DATA, COMPANY_STATS } from '../../data/mockData';
+import { COMPANY_INFO, PARTNER_COMPANIES, COMPANY_STATS } from '../../data/mockData';
 import { 
   Building2, 
   Award, 
@@ -9,7 +9,7 @@ import {
   Factory, 
   ShieldCheck, 
   Target, 
-  Compass, 
+  Handshake, 
   Phone, 
   Layers, 
   Cpu, 
@@ -24,6 +24,7 @@ interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
+
     <div id="about-page-container" className="space-y-16 lg:space-y-20 pb-16">
       
       {/* Header Banner */}
@@ -123,51 +124,82 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Interactive Timeline of Growth */}
-      <section className="bg-white py-14 sm:py-18 border-y border-gray-200">
+      {/* Partner Companies & Co-operations Slider */}
+      <section className="bg-white py-12 sm:py-16 border-y border-gray-200 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center sm:text-right mb-12">
-            <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#0F612F] px-3.5 py-1 rounded-full text-xs font-bold mb-2 border border-[#0F612F]/20">
-              <Compass className="w-3.5 h-3.5" />
-              <span>گاه‌شمار پیشرفت کارخانه</span>
+          <div className="mb-8 text-right">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#0F612F] px-3.5 py-1 rounded-full text-xs font-bold mb-2 border border-[#0F612F]/20">
+                <Handshake className="w-3.5 h-3.5 text-[#0F612F]" />
+                <span>همکاری با صنایع مادر و برندهای برتر</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
+                با شرکت‌های معتبر و بزرگ زیر همکاری داشته‌ایم
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600 max-w-3xl mt-2 leading-relaxed font-light">
+                کارخانه صنعتی <strong className="text-gray-900 font-bold">رسا قطعه گستر مهر</strong> مفتخر است در طول بیش از <span className="en-num font-bold">40</span> سال فعالیت، در قالب پروژه‌های ساخت قالب‌های سنبه‌ماتریس و پروگرسیو، پرسکاری تیراژ سنگین، تزریق پلاستیک مهندسی و مدیریت زنجیره تامین، با نام‌آوران صنایع خودروسازی و لوازم خانگی کشور همکاری مستمر داشته باشد:
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-              مسیر رشد و دستاوردهای چهار دهه فعالیت
-            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TIMELINE_DATA.map((item, idx) => (
-              <div 
-                key={idx}
-                className="bg-[#F8FAF9] rounded-2xl p-6 border border-gray-200 hover:border-[#0F612F] hover:shadow-lg transition-all text-right flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-black en-num text-[#0F612F] bg-emerald-100/70 px-3 py-1 rounded-lg">
-                      {item.year}
-                    </span>
-                    <span className="text-xs font-bold text-gray-400">گام <span className="en-num font-bold">{idx + 1}</span></span>
-                  </div>
-                  <h4 className="text-sm font-bold text-gray-900 mb-2 group-hover:text-[#0F612F] transition-colors">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed font-light">
-                    {item.description}
-                  </p>
-                </div>
+          {/* Continuous 6-In-View Moving Slider Track */}
+          <div 
+            className="overflow-x-auto no-scrollbar relative py-2"
+          >
+            <div 
+              className="flex gap-3 sm:gap-4 w-max animate-marquee-continuous"
+              style={{ animationDuration: '30s' }}
+            >
+              {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, idx) => (
+                <div 
+                  key={`${company.id}-${idx}`}
+                  className="w-[170px] sm:w-[195px] lg:w-[200px] flex-shrink-0 bg-[#F8FAF9] hover:bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 hover:border-[#0F612F] hover:shadow-lg transition-all text-right flex flex-col justify-between group select-none"
+                >
+                  <div>
+                    {/* Monogram / Logo Mark */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[11px] font-black en-num text-[#0F612F] bg-emerald-100/80 px-2.5 py-0.5 rounded-md font-mono">
+                        {company.latinName}
+                      </span>
+                      <Building2 className="w-4 h-4 text-gray-400 group-hover:text-[#0F612F] transition-colors" />
+                    </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center gap-1.5 text-[11px] font-medium text-gray-500">
-                  <CheckCircle className="w-3.5 h-3.5 text-[#DECA19]" />
-                  <span>تثبیت استاندارد صنعتی</span>
+                    {/* Company Persian Name */}
+                    <h3 className="text-base sm:text-lg font-black text-gray-900 mb-1 group-hover:text-[#0F612F] transition-colors">
+                      {company.name}
+                    </h3>
+                    
+                    {/* Sector */}
+                    <span className="text-[11px] text-gray-500 font-medium block mb-2 leading-tight">
+                      {company.sector}
+                    </span>
+                  </div>
+
+                  {/* Cooperation Type */}
+                  <div className="mt-3 pt-2.5 border-t border-gray-200/70">
+                    <p className="text-[10px] text-gray-600 leading-snug font-light line-clamp-2">
+                      {company.cooperationType}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-between text-xs text-gray-500 pt-3 border-t border-gray-100">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle className="w-3.5 h-3.5 text-[#0F612F]" />
+              <span>تامین قطعات پرسی، قالب‌های تخصصی و خدمات تزریق مطابق با استانداردهای سخت‌گیرانه صنعتی</span>
+            </span>
+            <span className="hidden sm:inline text-[11px] text-gray-400">
+              * برای توقف حرکت، نشانگر ماوس را روی کارت‌ها نگه دارید
+            </span>
           </div>
 
         </div>
       </section>
+
 
       {/* Quality Control & Assurance */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

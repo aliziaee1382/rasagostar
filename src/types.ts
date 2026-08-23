@@ -44,6 +44,15 @@ export interface TimelineMilestone {
   tag: string;
 }
 
+export interface PartnerCompany {
+  id: string;
+  name: string;
+  latinName: string;
+  sector: string;
+  cooperationType: string;
+}
+
+
 export interface ContactFormData {
   fullName: string;
   phone: string;

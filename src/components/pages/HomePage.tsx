@@ -38,15 +38,16 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
-      case 'Award': return <Award className="w-7 h-7 text-[#DECA19]" />;
-      case 'Factory': return <Factory className="w-7 h-7 text-[#DECA19]" />;
-      case 'Users': return <Users className="w-7 h-7 text-[#DECA19]" />;
-      case 'Zap': return <Zap className="w-7 h-7 text-[#DECA19]" />;
-      case 'Cpu': return <Cpu className="w-6 h-6 text-[#0F612F]" />;
-      case 'Cog': return <Cog className="w-6 h-6 text-[#0F612F]" />;
-      case 'Layers': return <Layers className="w-6 h-6 text-[#0F612F]" />;
-      case 'Sparkles': return <Sparkles className="w-6 h-6 text-[#0F612F]" />;
-      default: return <Factory className="w-6 h-6 text-[#0F612F]" />;
+      case 'Award': return <Award className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'Factory': return <Factory className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'Users': return <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'Zap': return <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'Layers': return <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F] group-hover:text-[#DECA19] transition-colors" />;
+      case 'Cpu': return <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F]" />;
+      case 'Cog': return <Cog className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F]" />;
+      case 'Sparkles': return <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F]" />;
+      default: return <Factory className="w-5 h-5 sm:w-6 sm:h-6 text-[#0F612F]" />;
     }
   };
 
@@ -150,22 +151,23 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* 2. Key Factory Statistics */}
-      <section id="factory-stats" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-12 relative z-20">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* 2. Key Factory Statistics - 6 in one row on desktop, 3 per row on mobile */}
+      <section id="factory-stats" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 relative z-20">
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
           {COMPANY_STATS.map((stat, idx) => (
             <div 
               key={idx}
-              className="bg-white rounded-2xl p-5 sm:p-6 shadow-xl border border-gray-100 flex flex-col items-center sm:items-start text-center sm:text-right hover:border-[#0F612F] transition-all duration-300 group"
+              className="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 lg:p-4 shadow-md sm:shadow-lg border border-gray-100/90 flex flex-col items-center text-center hover:border-[#0F612F]/40 hover:shadow-xl transition-all duration-300 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[#0F612F] flex items-center justify-center mb-3 group-hover:bg-[#0F612F] group-hover:text-[#DECA19] transition-colors">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-emerald-50/90 text-[#0F612F] flex items-center justify-center mb-1.5 sm:mb-2 group-hover:bg-[#0F612F] transition-colors">
                 {getIconComponent(stat.icon)}
               </div>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-2xl sm:text-3xl font-black text-gray-900 en-num font-mono tracking-tight">{stat.value}</span>
-              </div>
-              <span className="text-xs font-bold text-gray-800 mb-1">{stat.label}</span>
-              <span className="text-[11px] text-gray-500 font-light">{stat.sublabel}</span>
+              <span className="text-sm sm:text-base lg:text-lg font-black text-gray-900 en-num font-mono tracking-tight leading-none mb-1">
+                {stat.value}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold text-gray-700 leading-tight">
+                {stat.label}
+              </span>
             </div>
           ))}
         </div>

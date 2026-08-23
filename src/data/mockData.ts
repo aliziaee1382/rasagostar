@@ -1,4 +1,4 @@
-import { ServiceDetail, PortfolioItem, CompanyStat, TimelineMilestone } from '../types';
+import { ServiceDetail, PortfolioItem, CompanyStat, TimelineMilestone, PartnerCompany } from '../types';
 
 export const COMPANY_INFO = {
   name: 'رسا قطعه گستر مهر',
@@ -32,30 +32,44 @@ export const COMPANY_STATS: CompanyStat[] = [
   {
     value: '40+',
     numericValue: 40,
-    label: 'سال سابقه صنعتی',
-    sublabel: 'از سال 1376 تاکنون با ریشه غنی در قالب‌سازی',
+    label: 'سال سابقه تخصصی',
+    sublabel: '',
     icon: 'Award',
   },
   {
     value: '1200',
     numericValue: 1200,
-    label: 'متر مربع سالن تولید',
-    sublabel: 'مجهز به خطوط پرسکاری، تزریق و برش لیزر',
+    label: 'متر سالن تولید',
+    sublabel: '',
     icon: 'Factory',
   },
   {
     value: '60',
     numericValue: 60,
-    label: 'نیروی متخصص و فعال',
-    sublabel: 'کادر مهندسی طراح، قالب‌سازان ماهر و تکنسین‌ها',
+    label: 'نیروی متخصص',
+    sublabel: '',
     icon: 'Users',
   },
   {
     value: '400',
     numericValue: 400,
-    label: 'تن توانایی پرسکاری',
-    sublabel: 'پرس‌های ضربه‌ای و هیدرولیک سنگین صنعتی',
+    label: 'تن توان پرسکاری',
+    sublabel: '',
     icon: 'Zap',
+  },
+  {
+    value: '200',
+    numericValue: 200,
+    label: 'گرم تزریق پلاستیک',
+    sublabel: '',
+    icon: 'Layers',
+  },
+  {
+    value: '100%',
+    numericValue: 100,
+    label: 'تضمین کیفیت و تطابق',
+    sublabel: '',
+    icon: 'ShieldCheck',
   },
 ];
 
@@ -280,6 +294,72 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     application: 'اسکلت‌های فلزی سنگین و ماشین‌آلات راه‌سازی',
     productionCapacity: '25,000 قطعه در ماه',
     tags: ['پرسکاری سنگین', 'پرس 400 تن', 'فولاد ST52', 'اتصالات صنعتی'],
+  },
+];
+
+export const PARTNER_COMPANIES: PartnerCompany[] = [
+  {
+    id: 'emersun',
+    name: 'امرسان',
+    latinName: 'EMERSUN',
+    sector: 'صنایع لوازم خانگی و برودتی',
+    cooperationType: 'ساخت قالب و تولید قطعات پرسی بدنه و پلیمری',
+  },
+  {
+    id: 'depoint',
+    name: 'دیپوینت',
+    latinName: 'DEPOINT',
+    sector: 'لوازم خانگی پیشرفته و برودتی',
+    cooperationType: 'تزریق پلاستیک مهندسی و پرسکاری قطعات دقیق',
+  },
+  {
+    id: 'saipa-azin',
+    name: 'سایپا آذین',
+    latinName: 'SAIPA AZIN',
+    sector: 'مجموعه‌سازی و تریم خودرو',
+    cooperationType: 'قالب‌های پروگرسیو و فریم‌های پرسی صندلی خودرو',
+  },
+  {
+    id: 'sapco',
+    name: 'ساپکو',
+    latinName: 'SAPCO',
+    sector: 'تامین قطعات ایران خودرو',
+    cooperationType: 'تامین و پرسکاری قطعات فلزی خطوط خودرویی',
+  },
+  {
+    id: 'sazeh-gostar',
+    name: 'سازه گستر',
+    latinName: 'SAZEH GOSTAR',
+    sector: 'تامین قطعات گروه سایپا',
+    cooperationType: 'تولید قطعات شاسی، بدنه و براکت‌های خودرویی',
+  },
+  {
+    id: 'opco',
+    name: 'اپکو',
+    latinName: 'OPCO',
+    sector: 'تولید خودروهای سفارشی ایران خودرو',
+    cooperationType: 'ساخت قالب‌های قطعات سفارشی و پرسکاری اختصاصی',
+  },
+  {
+    id: 'yakhsaran',
+    name: 'یخساران',
+    latinName: 'YAKHSARAN',
+    sector: 'صنایع برودتی و یخچال‌سازی',
+    cooperationType: 'طراحی قالب، کشش و پرسکاری استراکچرهای فلزی',
+  },
+  {
+    id: 'pakshoma',
+    name: 'پاکشوما',
+    latinName: 'PAKSHOMA',
+    sector: 'گروه صنعتی لوازم خانگی',
+    cooperationType: 'تزریق قطعات فنی و پرسکاری ورق‌های تقویتی',
+  },
+  {
+    id: 'farel',
+    name: 'فارل',
+    latinName: 'FAREL',
+    sector: 'قطعات و مجموعه‌های صنعتی',
+    cooperationType: 'برش لیزر، شکل‌دهی و قالب‌های صنعتی دقیق',
   },
 ];
 
