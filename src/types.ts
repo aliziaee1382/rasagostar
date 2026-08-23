@@ -52,6 +52,15 @@ export interface PartnerCompany {
   cooperationType: string;
 }
 
+export interface ProductionChainStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+  icon: string;
+  tag: string;
+  highlight: string;
+}
+
 
 export interface ContactFormData {
   fullName: string;
