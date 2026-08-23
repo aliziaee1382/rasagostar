@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageId, PortfolioItem } from '../../types';
-import { PORTFOLIO_ITEMS, COMPANY_INFO } from '../../data/mockData';
+import { useData } from '../../context/DataContext';
 import { 
   Layers, 
   Search, 
@@ -22,6 +22,10 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
   onNavigate,
   onSelectPortfolioItem,
 }) => {
+  const { data } = useData();
+  const products = data?.portfolioItems || [];
+  const companyInfo = data?.companyInfo || {};
+
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -33,7 +37,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
     { id: 'laser_cutting', label: 'قطعات برش لیزر' },
   ];
 
-  const filteredItems = PORTFOLIO_ITEMS.filter((item) => {
+  const filteredItems = products.filter((item) => {
     const matchesCategory = selectedFilter === 'all' || item.category === selectedFilter;
     const matchesSearch = 
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -56,7 +60,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
             <span>گالری دستاوردها و تولیدات</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black text-white mb-3">
-            نمونه قطعات و قالب‌های ساخته شده در <span className="text-[#DECA19]">رسا قطعه گستر مهر</span>
+            نمونه قطعات و قالب‌های ساخته شده در <span className="text-[#DECA19]">{companyInfo.name}</span>
           </h1>
           <div className="w-24 h-1 bg-[#DECA19] rounded-full mb-4" />
           <p className="text-xs sm:text-sm text-gray-300 max-w-3xl leading-relaxed">

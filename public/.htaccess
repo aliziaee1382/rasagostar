@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Do not rewrite real files or directories or api calls
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Allow direct access to api php scripts
+  RewriteRule ^api/(.*)$ api/$1 [L,QSA]
+
+  # Redirect all other requests to index.html for Single Page Application routing
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Protect sensitive data directories
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(json|lock|log)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>

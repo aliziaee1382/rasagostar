@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
-import { COMPANY_INFO } from '../data/mockData';
+import { useData } from '../context/DataContext';
 import { Logo } from './Logo';
 import { 
   Phone, 
@@ -25,8 +25,11 @@ export const Header: React.FC<HeaderProps> = ({
   activePage,
   onNavigate,
 }) => {
+  const { data } = useData();
+  const companyInfo = data?.companyInfo || {};
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
 
   // Monitor scroll position to apply glassmorphism and size changes
   useEffect(() => {
@@ -80,15 +83,15 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="flex items-center gap-1.5 text-gray-300">
               <Phone className="w-3.5 h-3.5 text-[#DECA19]" />
               <span className="font-semibold text-white">تماس واحد فروش:</span>
-              <span className="en-num font-bold text-white tracking-wide">{COMPANY_INFO.phone}</span>
+              <span className="en-num font-bold text-white tracking-wide">{companyInfo.phone}</span>
             </span>
             <span className="flex items-center gap-1.5 text-gray-300">
               <Clock className="w-3.5 h-3.5 text-[#DECA19]" />
-              <span>ساعت کاری: <span className="en-num text-gray-200">{COMPANY_INFO.workingHours}</span></span>
+              <span>ساعت کاری: <span className="en-num text-gray-200">{companyInfo.workingHours}</span></span>
             </span>
             <span className="flex items-center gap-1.5 text-gray-300">
               <MapPin className="w-3.5 h-3.5 text-[#DECA19]" />
-              <span>{COMPANY_INFO.address}</span>
+              <span>{companyInfo.address}</span>
             </span>
           </div>
 
@@ -170,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center gap-2">
             <a
-              href={`tel:${COMPANY_INFO.phoneTel || '02176266543'}`}
+              href={`tel:${companyInfo.phoneTel || '02176266543'}`}
               className={`bg-[#0F612F] text-white rounded-lg font-bold flex items-center justify-center shadow-sm transition-all duration-300 ${
                 isScrolled ? 'p-1.5 text-xs' : 'p-2 text-xs'
               }`}
@@ -223,11 +226,11 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div className="pt-4 border-t border-gray-100 flex flex-col gap-2">
             <a 
-              href={`tel:${COMPANY_INFO.phoneTel || '02176266543'}`}
+              href={`tel:${companyInfo.phoneTel || '02176266543'}`}
               className="w-full flex items-center justify-center gap-2 bg-[#0F612F] text-white py-3 rounded-lg text-xs font-bold transition-colors shadow-md"
             >
               <Phone className="w-4 h-4 text-[#DECA19]" />
-              <span>تماس مستقیم با کارخانه: <span className="en-num font-bold">{COMPANY_INFO.phone}</span></span>
+              <span>تماس مستقیم با کارخانه: <span className="en-num font-bold">{companyInfo.phone}</span></span>
             </a>
           </div>
         </div>

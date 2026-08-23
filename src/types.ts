@@ -73,12 +73,56 @@ export interface ContactFormData {
   attachmentName?: string;
 }
 
-export interface QuoteRequestData {
-  fullName: string;
+export interface CompanyInfoData {
+  name: string;
+  nameEn: string;
+  slogan: string;
+  subSlogan: string;
+  registrationNumber: string;
+  experienceYears: string;
+  personnelCount: string;
+  productionArea: string;
+  officeArea: string;
+  totalArea: string;
+  maxPressCapacity: string;
   phone: string;
-  serviceType: ServiceCategory;
-  material: string;
-  estimatedQuantity: string;
-  hasDrawings: boolean;
-  notes: string;
+  phoneDirect: string;
+  phoneTel: string;
+  mobileSupport: string;
+  mobileTel: string;
+  email: string;
+  emailSales: string;
+  address: string;
+  workingHours: string;
+  postalCode: string;
+  neshanMapsUrl: string;
+  neshanMapsEmbedUrl: string;
+  googleMapsUrl: string;
+  googleMapsEmbedUrl: string;
 }
+
+export interface IntegratedProcessStep {
+  step: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface SiteContentData {
+  companyInfo: CompanyInfoData;
+  stats: CompanyStat[];
+  aboutInfrastructureStats: CompanyStat[];
+  services: ServiceDetail[];
+  portfolioItems: PortfolioItem[];
+  partners: PartnerCompany[];
+  integratedProcessSteps: IntegratedProcessStep[];
+  productionChainSteps: ProductionChainStep[];
+  timelineMilestones: TimelineMilestone[];
+}
+
+export interface AdminUser {
+  username: string;
+  displayName: string;
+  role: string;
+}
+

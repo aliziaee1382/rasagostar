@@ -1,4 +1,4 @@
-import { ServiceDetail, PortfolioItem, CompanyStat, TimelineMilestone, PartnerCompany, ProductionChainStep } from '../types';
+import { ServiceDetail, PortfolioItem, CompanyStat, TimelineMilestone, PartnerCompany, ProductionChainStep, SiteContentData, IntegratedProcessStep } from '../types';
 
 export const COMPANY_INFO = {
   name: 'رسا قطعه گستر مهر',
@@ -575,32 +575,38 @@ export const INTEGRATED_PROCESS_STEPS = [
   {
     step: '01',
     title: 'بررسی نقشه و مهندسی معکوس',
-    description: 'تحلیل ابعادی، تلرانس‌گذاری و بررسی فایل‌های سه‌بعدی CAD/CAM یا نمونه فیزیکی مشتری',
+    description: 'تحلیل ابعادی، تلرانس‌گذاری و بررسی فایل‌های CAD/CAM یا نمونه فیزیکی مشتری',
     icon: 'FileText',
   },
   {
     step: '02',
-    title: 'طراحی و ساخت قالب صنعتی',
-    description: 'طراحی و ماشین‌کاری دقیق قالب‌های پروگرسیو، کشش، دایکست یا تزریق در واحد داخلی کارخانه',
+    title: 'طراحی، ساخت و تست قالب',
+    description: 'طراحی و ماشین‌کاری دقیق قالب‌های سنبه‌ماتریس، پروگرسیو، کشش، دایکست یا تزریق پلاستیک',
     icon: 'Cpu',
   },
   {
     step: '03',
     title: 'برش لیزر و آماده‌سازی مواد',
-    description: 'برش دقیق ورق‌های فلزی با لیزر فایبر و آماده‌سازی مواد اولیه پلیمری مهندسی',
+    description: 'برش دقیق ورق‌های فلزی با لیزر ۲×۶ متر تا ضخامت ۲۰mm و آماده‌سازی مواد پلیمری',
     icon: 'Sparkles',
   },
   {
     step: '04',
-    title: 'پرسکاری سنگین / تزریق پلاستیک',
-    description: 'تولید انبوه قطعات با پرس‌های 3 تا 400 تن یا دستگاه‌های تزریق پلاستیک تا 200 گرم',
+    title: 'پرسکاری سنگین و تزریق پلاستیک',
+    description: 'تولید انبوه با پرس‌های ضربه‌ای و هیدرولیک تا ۴۰۰ تن و تزریق با ماشین‌آلات Battenfeld',
     icon: 'Cog',
   },
   {
     step: '05',
-    title: 'کنترل کیفیت (QC) و بسته‌بندی',
-    description: 'تست‌های ابعادی، سختی‌سنجی و بازرسی نهایی قطعات و تحویل فوری مطابق استاندارد',
-    icon: 'CheckCircle',
+    title: 'فرآیندهای تکمیلی و پوشش‌دهی',
+    description: 'جوشکاری CO2، نقطه‌جوش، قلاویزکاری، پرداخت، ویبره، رنگ پودری الکترواستاتیک و آبکاری',
+    icon: 'Layers',
+  },
+  {
+    step: '06',
+    title: 'کنترل کیفیت (QC) و بسته‌بندی نهایی',
+    description: 'تست‌های ابعادی، سختی‌سنجی، بازرسی نهایی قطعات و تحویل فوری به مشتری',
+    icon: 'ShieldCheck',
   },
 ];
 
@@ -626,3 +632,43 @@ export const FAQS = [
     answer: 'بله، واحد قالب‌سازی ما علاوه بر ساخت قالب‌های جدید، آماده همکاری در نگهداری، بهینه‌سازی، تعمیر و اصلاح قالب‌های موجود مشتریان می‌باشد.',
   },
 ];
+
+export const TIMELINE_MILESTONES: TimelineMilestone[] = [
+  {
+    year: '۱۳۶۳',
+    title: 'آغاز فعالیت و بنیان‌گذاری کارگاه قالب‌سازی',
+    description: 'شروع فعالیت با تمرکز بر ماشین‌کاری دقیق، ساخت قالب‌های سنبه‌ماتریس و قطعه‌سازی صنعتی.',
+    tag: 'بیش از ۴۰ سال تجربه',
+  },
+  {
+    year: '۱۳۷۸',
+    title: 'توسعه خطوط پرسکاری ضربه‌ای و هیدرولیک',
+    description: 'راه‌اندازی سالن پرسکاری و افزایش ظرفیت تولید تیراژ برای صنایع خودرو و لوازم خانگی.',
+    tag: 'توسعه ظرفیت پرسکاری',
+  },
+  {
+    year: '۱۳۹۰',
+    title: 'ورود به صنعت تزریق پلاستیک مهندسی',
+    description: 'تجهیز کارخانه به دستگاه‌های مدرن تزریق باتنفلد و ارائه خدمات همزمان فلز و پلیمر.',
+    tag: 'تجهیز سالن تزریق پلاستیک',
+  },
+  {
+    year: '۱۴۰۲',
+    title: 'تاسیس رسمی رسا قطعه گستر مهر و ارتقای یکپارچه',
+    description: 'ثبت رسمی شرکت به شماره ۱۸۷۶، استقرار در کارخانه ۲۰۰۰ متری با پرس‌های ۴۰۰ تن و لیزر فایبر ۲×۶ متر.',
+    tag: 'زنجیره یکپارچه تولید',
+  },
+];
+
+export const DEFAULT_SITE_DATA: SiteContentData = {
+  companyInfo: COMPANY_INFO,
+  stats: COMPANY_STATS,
+  aboutInfrastructureStats: ABOUT_INFRASTRUCTURE_STATS,
+  services: SERVICES_DATA,
+  portfolioItems: PORTFOLIO_ITEMS,
+  partners: PARTNER_COMPANIES,
+  integratedProcessSteps: INTEGRATED_PROCESS_STEPS,
+  productionChainSteps: PRODUCTION_CHAIN_STEPS,
+  timelineMilestones: TIMELINE_MILESTONES,
+};
+

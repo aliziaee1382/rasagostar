@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PageId } from '../../types';
-import { COMPANY_INFO, FAQS } from '../../data/mockData';
+import { useData } from '../../context/DataContext';
+import { FAQS } from '../../data/mockData';
 import { RubikaIcon } from '../RubikaIcon';
 import { 
   Phone, 
@@ -26,6 +27,9 @@ interface ContactPageProps {
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
+  const { data } = useData();
+  const companyInfo = data?.companyInfo || {};
+
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -38,10 +42,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [copiedPhone, setCopiedPhone] = useState(false);
 
   const handleCopyPhone = () => {
-    navigator.clipboard.writeText('09103176904');
+    navigator.clipboard.writeText(companyInfo.mobileSupport);
     setCopiedPhone(true);
     setTimeout(() => setCopiedPhone(false), 2500);
   };
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +76,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             <span>راه‌های ارتباطی و آدرس</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black text-white mb-3">
-            تماس با کارخانه <span className="text-[#DECA19]">رسا قطعه گستر مهر</span>
+            تماس با کارخانه <span className="text-[#DECA19]">{companyInfo.name}</span>
           </h1>
           <div className="w-24 h-1 bg-[#DECA19] rounded-full mb-4" />
           <p className="text-xs sm:text-sm text-gray-300 max-w-3xl leading-relaxed">
@@ -102,8 +107,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <strong className="block text-gray-900 mb-0.5">آدرس کارخانه:</strong>
-                    <p className="text-gray-600 leading-relaxed">{COMPANY_INFO.address}</p>
-                    <span className="text-[11px] text-gray-400 mt-1 block">کد پستی: <span className="en-num font-mono">{COMPANY_INFO.postalCode}</span></span>
+                    <p className="text-gray-600 leading-relaxed">{companyInfo.address}</p>
+                    <span className="text-[11px] text-gray-400 mt-1 block">کد پستی: <span className="en-num font-mono">{companyInfo.postalCode}</span></span>
                   </div>
                 </div>
 
@@ -114,9 +119,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <strong className="block text-gray-900 mb-0.5">شماره‌های تماس:</strong>
-                    <p className="text-gray-700">تلفن کارخانه: <span className="en-num font-bold text-gray-900 dir-ltr">{COMPANY_INFO.phone}</span></p>
-                    <p className="text-gray-700 mt-1">واحد مهندسی و فروش: <span className="en-num font-bold text-gray-900 dir-ltr">{COMPANY_INFO.phoneDirect}</span></p>
-                    <p className="text-gray-700 mt-1">پشتیبانی و واتساپ: <span className="en-num font-bold text-[#0F612F] dir-ltr">{COMPANY_INFO.mobileSupport}</span></p>
+                    <p className="text-gray-700">تلفن کارخانه: <span className="en-num font-bold text-gray-900 dir-ltr">{companyInfo.phone}</span></p>
+                    <p className="text-gray-700 mt-1">واحد مهندسی و فروش: <span className="en-num font-bold text-gray-900 dir-ltr">{companyInfo.phoneDirect}</span></p>
+                    <p className="text-gray-700 mt-1">پشتیبانی و واتساپ: <span className="en-num font-bold text-[#0F612F] dir-ltr">{companyInfo.mobileSupport}</span></p>
                   </div>
                 </div>
 
@@ -127,8 +132,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <strong className="block text-gray-900 mb-0.5">پست الکترونیک (ایمیل):</strong>
-                    <p className="text-gray-700 en-num">{COMPANY_INFO.email}</p>
-                    <p className="text-gray-700 en-num mt-1">{COMPANY_INFO.emailSales}</p>
+                    <p className="text-gray-700 en-num">{companyInfo.email}</p>
+                    <p className="text-gray-700 en-num mt-1">{companyInfo.emailSales}</p>
                   </div>
                 </div>
 
@@ -139,7 +144,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <strong className="block text-gray-900 mb-0.5">ساعات فعالیت و پذیرش:</strong>
-                    <p className="text-gray-600 leading-relaxed"><span className="en-num">{COMPANY_INFO.workingHours}</span></p>
+                    <p className="text-gray-600 leading-relaxed"><span className="en-num">{companyInfo.workingHours}</span></p>
                   </div>
                 </div>
 
@@ -154,7 +159,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   <span>موقعیت مکانی روی نقشه</span>
                 </h3>
                 <a
-                  href={COMPANY_INFO.neshanMapsUrl}
+                  href={companyInfo.neshanMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0F612F] hover:text-[#0c4e26] transition-colors"
@@ -168,7 +173,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
               <div className="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden border border-gray-300 shadow-sm bg-gray-100">
                 <iframe
                   title="موقعیت شرکت رسا قطعه گستر مهر در نقشه نشان"
-                  src={COMPANY_INFO.neshanMapsEmbedUrl}
+                  src={companyInfo.neshanMapsEmbedUrl}
                   className="w-full h-full border-0"
                   allowFullScreen={true}
                   loading="lazy"
@@ -178,11 +183,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
               <div className="flex items-center justify-between bg-emerald-50/70 border border-[#0F612F]/20 rounded-xl p-3 text-xs text-gray-700">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-[#0F612F] shrink-0" />
-                  <span className="font-semibold text-gray-900">شرکت رسا قطعه گستر مهر</span>
+                  <span className="font-semibold text-gray-900">{companyInfo.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <a
-                    href={COMPANY_INFO.neshanMapsUrl}
+                    href={companyInfo.neshanMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all shadow-xs shrink-0 flex items-center gap-1 cursor-pointer"
@@ -191,7 +196,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     <span>مسیریابی با نشان</span>
                   </a>
                   <a
-                    href={COMPANY_INFO.googleMapsUrl}
+                    href={companyInfo.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1.5 rounded-lg text-[10px] font-medium transition-all shrink-0 hidden sm:inline-flex items-center gap-1"

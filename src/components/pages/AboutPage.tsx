@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageId } from '../../types';
-import { COMPANY_INFO, PARTNER_COMPANIES, ABOUT_INFRASTRUCTURE_STATS, PRODUCTION_CHAIN_STEPS } from '../../data/mockData';
+import { useData } from '../../context/DataContext';
+import { ABOUT_INFRASTRUCTURE_STATS, PRODUCTION_CHAIN_STEPS } from '../../data/mockData';
 import { 
   Building2, 
   Award, 
@@ -28,7 +29,12 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
+  const { data } = useData();
+  const companyInfo = data?.companyInfo || {};
+  const partnerCompanies = data?.partners || [];
+
   const getStepIcon = (iconName: string) => {
+
     switch (iconName) {
       case 'Cpu': return <Cpu className="w-5 h-5" />;
       case 'Layers': return <Layers className="w-5 h-5" />;
@@ -276,7 +282,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               className="flex gap-3 sm:gap-4 w-max animate-marquee-continuous"
               style={{ animationDuration: '30s' }}
             >
-              {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, idx) => (
+              {[...partnerCompanies, ...partnerCompanies].map((company, idx) => (
                 <div 
                   key={`${company.id}-${idx}`}
                   className="w-[170px] sm:w-[195px] lg:w-[200px] flex-shrink-0 bg-[#F8FAF9] hover:bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 hover:border-[#0F612F] hover:shadow-lg transition-all text-right flex flex-col justify-between group select-none"
@@ -354,19 +360,19 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <a
-                  href={`tel:${COMPANY_INFO.phoneTel}`}
+                  href={`tel:${companyInfo.phoneTel}`}
                   className="bg-[#0F612F] hover:bg-[#0c4e26] text-white py-3 px-3 rounded-xl font-bold text-xs border border-[#DECA19]/40 transition-all text-center cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#DECA19]" />
-                  <span>تلفن: <span className="en-num font-bold">02176266543</span></span>
+                  <span>تلفن: <span className="en-num font-bold">{companyInfo.phone}</span></span>
                 </a>
 
                 <a
-                  href={`tel:${COMPANY_INFO.mobileTel}`}
+                  href={`tel:${companyInfo.mobileTel}`}
                   className="bg-white/10 hover:bg-white/20 text-white py-3 px-3 rounded-xl font-bold text-xs border border-white/20 transition-all text-center cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-[#DECA19]" />
-                  <span>همراه: <span className="en-num font-bold">09103176904</span></span>
+                  <span>همراه: <span className="en-num font-bold">{companyInfo.mobileSupport}</span></span>
                 </a>
               </div>
             </div>

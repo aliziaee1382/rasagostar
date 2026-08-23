@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageId } from '../types';
-import { COMPANY_INFO, SERVICES_DATA } from '../data/mockData';
+import { useData } from '../context/DataContext';
 import { Logo } from './Logo';
 import { RubikaIcon } from './RubikaIcon';
 import { 
@@ -17,12 +17,18 @@ import {
 
 interface FooterProps {
   onNavigate: (page: PageId) => void;
+  onOpenAdminLogin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdminLogin }) => {
+  const { data } = useData();
+  const companyInfo = data?.companyInfo || {};
+  const services = data?.services || [];
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
 
   return (
     <footer id="main-footer" className="bg-[#0c1a11] text-gray-300 border-t-4 border-[#DECA19] relative">
@@ -75,35 +81,35 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 />
               </div>
               <div>
-                <h3 className="text-lg font-black text-white">{COMPANY_INFO.name}</h3>
-                <span className="text-[11px] text-[#DECA19] font-mono">{COMPANY_INFO.nameEn}</span>
+                <h3 className="text-lg font-black text-white">{companyInfo.name}</h3>
+                <span className="text-[11px] text-[#DECA19] font-mono">{companyInfo.nameEn}</span>
               </div>
             </div>
 
             <p className="text-xs text-gray-400 leading-relaxed">
-              کارخانه تولیدی رسا قطعه گستر مهر با بیش از <span className="en-num font-bold">40</span> سال سابقه درخشان در زمینه طراحی و ساخت انواع قالب‌های صنعتی، پرسکاری سنگین و سبک تا <span className="en-num font-bold">400</span> تن، تزریق پلاستیک مهندسی تا <span className="en-num font-bold">200</span> گرم و برش لیزر فایبر فعالیت می‌نماید.
+              کارخانه تولیدی {companyInfo.name} با بیش از <span className="en-num font-bold">{companyInfo.experienceYears}</span> سابقه درخشان در زمینه طراحی و ساخت انواع قالب‌های صنعتی، پرسکاری سنگین و سبک تا <span className="en-num font-bold">{companyInfo.maxPressCapacity}</span>، تزریق پلاستیک مهندسی و برش لیزر فایبر فعالیت می‌نماید.
             </p>
 
             <div className="pt-2 space-y-3">
               <a
-                href={`tel:${COMPANY_INFO.phoneTel || '02176266543'}`}
+                href={`tel:${companyInfo.phoneTel || '02176266543'}`}
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#0F612F] hover:bg-[#0c4e26] text-white py-2.5 px-4 rounded-lg text-xs font-bold transition-all border border-[#DECA19]/40 shadow-sm cursor-pointer"
               >
                 <Phone className="w-4 h-4 text-[#DECA19]" />
-                <span>تماس مستقیم با واحد فروش: <span className="en-num font-bold">{COMPANY_INFO.phone}</span></span>
+                <span>تماس مستقیم با واحد فروش: <span className="en-num font-bold">{companyInfo.phone}</span></span>
               </a>
 
               {/* Social Communication Icons */}
               <div>
-                <span className="text-[11px] text-gray-400 block mb-2 font-medium">ارتباط مستقیم و ارسال پیام (09103176904):</span>
+                <span className="text-[11px] text-gray-400 block mb-2 font-medium">ارتباط مستقیم و ارسال پیام ({companyInfo.mobileSupport}):</span>
                 <div className="flex items-center gap-2.5">
                   {/* WhatsApp */}
                   <a
-                    href="https://wa.me/989103176904?text=%D8%B3%D9%84%D8%A7%D9%85%D8%8C%20%D8%AC%D9%87%D8%AA%20%D8%A7%D8%B3%D8%AA%D8%B9%D9%84%D8%A7%D9%85%20%D9%82%DB%8C%D9%85%D8%AA%20%D9%88%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%86%D8%B9%D8%AA%DB%8C%20%D9%BE%DB%8C%D8%A7%D9%85%20%D9%85%DB%8C%E2%80%8C%D8%AF%D9%87%D9%85."
+                    href={`https://wa.me/98${companyInfo.mobileTel.replace(/^0/, '')}?text=%D8%B3%D9%84%D8%A7%D9%85%D8%8C%20%D8%AC%D9%87%D8%AA%20%D8%A7%D8%B3%D8%AA%D8%B9%D9%84%D8%A7%D9%85%20%D9%82%DB%8C%D9%85%D8%AA%20%D9%88%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%86%D8%B9%D8%AA%DB%8C%20%D9%BE%DB%8C%D8%A7%D9%85%20%D9%85%DB%8C%E2%80%8C%D8%AF%D9%87%D9%85.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#25D366]/20 border border-white/10 hover:border-[#25D366]/60 flex items-center justify-center transition-all group cursor-pointer shadow-2xs hover:scale-105"
-                    title="واتساپ (WhatsApp): 09103176904"
+                    title={`واتساپ: ${companyInfo.mobileSupport}`}
                     aria-label="واتساپ"
                   >
                     <svg className="w-5 h-5 fill-[#25D366]" viewBox="0 0 24 24">
@@ -117,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-amber-400/60 flex items-center justify-center transition-all group cursor-pointer shadow-2xs hover:scale-105 p-1"
-                    title="روبیکا (Rubika): 09103176904"
+                    title={`روبیکا: ${companyInfo.mobileSupport}`}
                     aria-label="روبیکا"
                   >
                     <RubikaIcon className="w-full h-full" />
@@ -129,7 +135,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-xl bg-white/5 hover:bg-[#00A884]/20 border border-white/10 hover:border-[#00A884]/60 flex items-center justify-center transition-all group cursor-pointer shadow-2xs hover:scale-105"
-                    title="پیام‌رسان بله (Bale): 09103176904"
+                    title={`پیام‌رسان بله: ${companyInfo.mobileSupport}`}
                     aria-label="پیام‌رسان بله"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 36 36" fill="none">
@@ -222,7 +228,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span>خدمات و خطوط تولید</span>
             </h4>
             <ul className="space-y-2.5 text-xs text-gray-300">
-              {SERVICES_DATA.map((srv) => (
+              {services.map((srv) => (
                 <li key={srv.id}>
                   <button
                     onClick={() => { onNavigate('services'); scrollToTop(); }}
@@ -245,33 +251,37 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
             <div className="flex items-start gap-2.5 text-gray-300">
               <MapPin className="w-4 h-4 text-[#DECA19] shrink-0 mt-0.5" />
-              <span className="leading-relaxed">{COMPANY_INFO.address}</span>
+              <span className="leading-relaxed">{companyInfo.address}</span>
             </div>
 
             <div className="flex items-center gap-2.5 text-gray-300">
               <Phone className="w-4 h-4 text-[#DECA19] shrink-0" />
               <div className="flex flex-col">
-                <span>تلفن: <span className="en-num font-bold">{COMPANY_INFO.phone}</span></span>
-                <span className="text-[11px] text-gray-400">فروش مستقیم: <span className="en-num">{COMPANY_INFO.phoneDirect}</span></span>
+                <span>تلفن: <span className="en-num font-bold">{companyInfo.phone}</span></span>
+                <span className="text-[11px] text-gray-400">فروش مستقیم: <span className="en-num">{companyInfo.phoneDirect}</span></span>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 text-gray-300">
               <Mail className="w-4 h-4 text-[#DECA19] shrink-0" />
-              <span className="font-mono text-gray-400">{COMPANY_INFO.email}</span>
+              <span className="font-mono text-gray-400">{companyInfo.email}</span>
             </div>
 
             <div className="flex items-start gap-2.5 text-gray-300">
               <Clock className="w-4 h-4 text-[#DECA19] shrink-0 mt-0.5" />
-              <span className="text-gray-400 leading-relaxed"><span className="en-num">{COMPANY_INFO.workingHours}</span></span>
+              <span className="text-gray-400 leading-relaxed"><span className="en-num">{companyInfo.workingHours}</span></span>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Copyright Bar */}
+        {/* Bottom Copyright Bar with Discreet Admin Trigger */}
         <div className="mt-12 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-          <div>
+          <div 
+            onClick={() => onOpenAdminLogin && onOpenAdminLogin()}
+            className="cursor-default select-none transition-none"
+            title=""
+          >
             © کلیه حقوق مادی و معنوی برای <strong className="text-gray-300">کارخانه رسا قطعه گستر مهر</strong> محفوظ می‌باشد.
           </div>
           <div>

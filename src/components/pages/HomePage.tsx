@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageId, ServiceCategory, PortfolioItem } from '../../types';
-import { 
-  COMPANY_INFO, 
-  COMPANY_STATS, 
-  SERVICES_DATA, 
-  PORTFOLIO_ITEMS, 
-  INTEGRATED_PROCESS_STEPS,
-  PARTNER_COMPANIES
-} from '../../data/mockData';
+import { useData } from '../../context/DataContext';
 import { 
   Award, 
   Factory, 
@@ -20,17 +13,17 @@ import {
   Sparkles, 
   CheckCircle2, 
   PhoneCall, 
-  ChevronLeft,
-  ChevronRight,
-  FileCheck,
-  Compass,
-  ArrowUpRight,
-  Building2,
-  Handshake,
-  Sliders,
-  Check,
-  Phone,
-  Maximize2
+  ChevronLeft, 
+  ChevronRight, 
+  FileCheck, 
+  Compass, 
+  ArrowUpRight, 
+  Building2, 
+  Handshake, 
+  Sliders, 
+  Check, 
+  Phone, 
+  Maximize2 
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -55,8 +48,17 @@ export const HomePage: React.FC<HomePageProps> = ({
   onOpenService,
   onSelectPortfolioItem,
 }) => {
+  const { data } = useData();
+  const companyInfo = data?.companyInfo || {};
+  const companyStats = data?.stats || [];
+  const servicesData = data?.services || [];
+  const portfolioItems = data?.portfolioItems || [];
+  const workflowSteps = data?.integratedProcessSteps || [];
+  const partnerCompanies = data?.partners || [];
+
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+
 
   // 4 Specific Hero Slides based on company catalog
   const heroSlides: HeroSlide[] = [
@@ -348,7 +350,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 2. Key Factory Statistics */}
       <section id="factory-stats" className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 -mt-8 sm:-mt-12 relative z-20">
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
-          {COMPANY_STATS.map((stat, idx) => (
+          {companyStats.map((stat, idx) => (
             <div 
               key={idx}
               className="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 lg:p-4 shadow-md sm:shadow-lg border border-gray-100/90 flex flex-col items-center text-center hover:border-[#0F612F]/40 hover:shadow-xl transition-all duration-300 group"
@@ -379,7 +381,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <span>اعتماد برندهای تراز اول کشور</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-                مشتریان و شرکای تجاری رسا قطعه گستر مهر
+                مشتریان و شرکای تجاری {companyInfo.name}
               </h2>
             </div>
             <p className="text-xs text-gray-500 max-w-md font-medium leading-relaxed">
@@ -393,7 +395,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
 
             <div className="animate-marquee-continuous flex items-center gap-4 sm:gap-6">
-              {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((partner, index) => (
+              {[...partnerCompanies, ...partnerCompanies].map((partner, index) => (
                 <div
                   key={`${partner.id}-${index}`}
                   className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gray-50 hover:bg-emerald-50/60 border border-gray-200 hover:border-[#0F612F]/40 transition-colors shrink-0 cursor-default"
@@ -426,7 +428,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <span>خدمات <span className="en-num font-bold">۴</span> گانه تخصصی کارخانه</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
-            خطوط تولید و توانمندی‌های اجرایی رسا قطعه گستر مهر
+            خطوط تولید و توانمندی‌های اجرایی {companyInfo.name}
           </h2>
           <p className="text-xs sm:text-sm text-gray-500 max-w-3xl">
             ارائه کلیه خدمات صنعتی مطابق با استاندارد، نقشه‌های فنی مهندسی و نمونه‌های ارائه‌شده توسط کارفرما
@@ -434,7 +436,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SERVICES_DATA.map((srv) => (
+          {servicesData.map((srv) => (
             <div 
               key={srv.id}
               onClick={() => onOpenService(srv.id)}
@@ -554,17 +556,23 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {INTEGRATED_PROCESS_STEPS.map((step) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {workflowSteps.map((step) => (
               <div 
                 key={step.step}
-                className="relative bg-[#F8FAF9] rounded-2xl p-6 border border-gray-200 flex flex-col justify-between text-right group hover:border-[#0F612F] hover:bg-emerald-50/30 transition-all"
+                className="relative bg-[#F8FAF9] rounded-2xl p-6 border border-gray-200 flex flex-col justify-between text-right group hover:border-[#0F612F] hover:bg-emerald-50/30 hover:shadow-md transition-all duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-2xl font-black en-num text-[#0F612F] font-mono">{step.step}</span>
-                    <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0F612F] flex items-center justify-center font-bold text-xs">
-                      <FileCheck className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#0F612F] flex items-center justify-center font-bold text-xs group-hover:bg-[#0F612F] group-hover:text-[#DECA19] transition-colors">
+                      {step.icon === 'FileText' && <FileCheck className="w-4 h-4" />}
+                      {step.icon === 'Cpu' && <Cpu className="w-4 h-4" />}
+                      {step.icon === 'Sparkles' && <Sparkles className="w-4 h-4" />}
+                      {step.icon === 'Cog' && <Cog className="w-4 h-4" />}
+                      {step.icon === 'Layers' && <Layers className="w-4 h-4" />}
+                      {step.icon === 'ShieldCheck' && <ShieldCheck className="w-4 h-4" />}
+                      {!['FileText', 'Cpu', 'Sparkles', 'Cog', 'Layers', 'ShieldCheck'].includes(step.icon) && <FileCheck className="w-4 h-4" />}
                     </div>
                   </div>
                   <h4 className="text-sm font-bold text-gray-900 mb-2">{step.title}</h4>
@@ -572,7 +580,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-gray-200/60 text-[10px] font-bold text-[#0F612F]">
-                  مرحله <span className="en-num font-bold">{step.step}</span> فرآیند کنترل کیفی
+                  مرحله <span className="en-num font-bold">{step.step}</span> زنجیره تولید یکپارچه
                 </div>
               </div>
             ))}
@@ -603,7 +611,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PORTFOLIO_ITEMS.slice(0, 3).map((item) => (
+          {portfolioItems.slice(0, 3).map((item) => (
             <div 
               key={item.id}
               onClick={() => onSelectPortfolioItem(item)}
@@ -678,11 +686,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               </button>
 
               <a
-                href={`tel:${COMPANY_INFO.phoneTel || '02176266543'}`}
+                href={`tel:${companyInfo.phoneTel || '02176266543'}`}
                 className="w-full bg-[#0F612F] hover:bg-[#0c4e26] text-white py-3.5 px-6 rounded-xl font-bold text-sm shadow-md transition-all border border-[#DECA19]/40 flex items-center justify-center gap-2"
               >
                 <Phone className="w-4 h-4 text-[#DECA19]" />
-                <span>تماس مستقیم: <span className="en-num font-bold">{COMPANY_INFO.phone}</span></span>
+                <span>تماس مستقیم: <span className="en-num font-bold">{companyInfo.phone}</span></span>
               </a>
             </div>
           </div>

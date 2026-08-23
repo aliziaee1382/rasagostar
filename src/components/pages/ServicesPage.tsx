@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { PageId, ServiceCategory } from '../../types';
+import { useData } from '../../context/DataContext';
 import { 
-  SERVICES_DATA, 
-  COMPANY_INFO,
   INHOUSE_PRODUCTION_PROCESSES,
   PARTNER_COMPLEMENTARY_SERVICES
 } from '../../data/mockData';
@@ -40,6 +39,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   onNavigate,
   initialSelectedService = 'mold_making',
 }) => {
+  const { data } = useData();
+  const servicesData = data?.services || [];
+  const companyInfo = data?.companyInfo || {};
+
   const [activeTab, setActiveTab] = useState<ServiceCategory>(initialSelectedService);
 
   const getIcon = (id: ServiceCategory) => {
@@ -68,7 +71,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     }
   };
 
-  const selectedServiceData = SERVICES_DATA.find((s) => s.id === activeTab) || SERVICES_DATA[0];
+  const selectedServiceData = servicesData.find((s) => s.id === activeTab) || servicesData[0];
+
 
   // 4-stage mold making process
   const moldProcessSteps = [
@@ -89,7 +93,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
             <span>مدیریت یکپارچه زنجیره تولید • از قالب تا قطعه نهایی</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black text-white mb-3">
-            خدمات صنعتی و خطوط تولید <span className="text-[#DECA19]">رسا قطعه گستر مهر</span>
+            خدمات صنعتی و خطوط تولید <span className="text-[#DECA19]">{companyInfo.name}</span>
           </h1>
           <div className="w-24 h-1 bg-[#DECA19] rounded-full mb-4" />
           <p className="text-xs sm:text-sm text-gray-300 max-w-3xl leading-relaxed">
@@ -103,7 +107,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         
         {/* Service Tab Buttons */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-          {SERVICES_DATA.map((srv, index) => {
+          {servicesData.map((srv, index) => {
             const isCurrent = srv.id === activeTab;
             return (
               <button
