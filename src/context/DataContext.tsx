@@ -156,7 +156,13 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             services: { ...DEFAULT_SITE_DATA.pagesContent.services, ...(parsed.pagesContent?.services || {}) },
             contact: { ...DEFAULT_SITE_DATA.pagesContent.contact, ...(parsed.pagesContent?.contact || {}) }
           },
-          companyInfo: { ...DEFAULT_SITE_DATA.companyInfo, ...(parsed.companyInfo || {}) },
+          companyInfo: { 
+            ...DEFAULT_SITE_DATA.companyInfo, 
+            ...(parsed.companyInfo || {}),
+            slogan: (parsed.companyInfo?.slogan && !parsed.companyInfo.slogan.includes('تجربه، تخصص')) 
+              ? parsed.companyInfo.slogan 
+              : 'از طراحی نقشه تا محصول نهایی'
+          },
           stats: parsed.stats || DEFAULT_SITE_DATA.stats,
           aboutInfrastructureStats: parsed.aboutInfrastructureStats || DEFAULT_SITE_DATA.aboutInfrastructureStats,
           services: parsed.services || DEFAULT_SITE_DATA.services,
