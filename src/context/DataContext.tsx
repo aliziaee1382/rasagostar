@@ -140,6 +140,19 @@ const STORAGE_KEY_TOKEN = 'rasa_cms_auth_token_v1';
 const STORAGE_KEY_USER = 'rasa_cms_auth_user_v1';
 const STORAGE_KEY_MESSAGES = 'rasa_cms_messages_v1';
 
+/**
+ * Dynamically resolves the API endpoint URL taking into account subfolder deployments.
+ */
+export const getApiUrl = (endpoint: string): string => {
+  if (typeof window === 'undefined') {
+    return `/api/${endpoint.replace(/^\/+/, '')}`;
+  }
+  const base = window.location.pathname.endsWith('/') 
+    ? window.location.pathname 
+    : window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+  return `${base}api/${endpoint.replace(/^\/+/, '')}`;
+};
+
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteContentData>(() => {
     // 1. Check LocalStorage cache first for instant rendering
@@ -260,7 +273,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!authToken) return;
     setIsLoadingMessages(true);
     try {
-      const res = await fetch('/api/messages.php', {
+      const res = await fetch(getApiUrl('messages.php'), {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Accept': 'application/json'
@@ -312,7 +325,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     try {
-      const res = await fetch('/api/messages.php', {
+      const res = await fetch(getApiUrl('messages.php'), {
         method: 'POST',
         body: formData
       });
@@ -379,7 +392,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     status: MessageStatus
   ): Promise<{ success: boolean; message: string }> => {
     try {
-      await fetch(`/api/messages.php?action=status&id=${id}`, {
+      await fetch(getApiUrl(`messages.php?action=status&id=${id}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -404,7 +417,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Delete message (Admin only)
   const deleteMessage = async (id: string): Promise<{ success: boolean; message: string }> => {
     try {
-      await fetch(`/api/messages.php?id=${id}`, {
+      await fetch(getApiUrl(`messages.php?id=${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': authToken ? `Bearer ${authToken}` : ''
@@ -428,7 +441,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const uploadFormData = new FormData();
       uploadFormData.append('file', file);
 
-      const res = await fetch('/api/upload.php', {
+      const res = await fetch(getApiUrl('upload.php'), {
         method: 'POST',
         headers: {
           'Authorization': authToken ? `Bearer ${authToken}` : ''
@@ -481,7 +494,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       try {
         // Try fetching from PHP API
-        const response = await fetch('/api/content.php', {
+        const response = await fetch(getApiUrl('content.php'), {
           method: 'GET',
           headers: { 'Accept': 'application/json' }
         });
@@ -543,7 +556,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (username: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
       // 1. Try real server API endpoint
-      const response = await fetch('/api/auth.php', {
+      const response = await fetch(getApiUrl('auth.php'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -745,7 +758,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     try {
       // 1. Send to PHP Backend API with Bearer token
-      const response = await fetch('/api/content.php', {
+      const response = await fetch(getApiUrl('content.php'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -787,7 +800,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const resetToDefaults = async (): Promise<{ success: boolean; message: string }> => {
     setIsSaving(true);
     try {
-      await fetch('/api/content.php?action=reset', {
+      await fetch(getApiUrl('content.php?action=reset'), {
         method: 'POST',
         headers: {
           'Authorization': authToken ? `Bearer ${authToken}` : ''
