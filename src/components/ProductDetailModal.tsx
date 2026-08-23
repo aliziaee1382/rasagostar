@@ -91,16 +91,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-6">
-                {item.tags.map((t, idx) => (
-                  <span 
-                    key={idx}
-                    className="text-[11px] bg-emerald-50 text-[#0F612F] px-2.5 py-0.5 rounded-full font-medium border border-[#0F612F]/20"
-                  >
-                    #{t}
-                  </span>
-                ))}
-              </div>
+              {(item.tags && item.tags.length > 0) && (
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {item.tags.map((t, idx) => (
+                    <span 
+                      key={idx}
+                      className="text-[11px] bg-emerald-50 text-[#0F612F] px-2.5 py-0.5 rounded-full font-medium border border-[#0F612F]/20"
+                    >
+                      #{t}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}

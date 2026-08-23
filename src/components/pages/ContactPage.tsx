@@ -27,15 +27,19 @@ interface ContactPageProps {
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
-  const { data } = useData();
+  const { data, submitContactMessage } = useData();
   const companyInfo = data?.companyInfo || {};
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [serviceInterest, setServiceInterest] = useState<string>('general');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [trackingCode, setTrackingCode] = useState('');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -47,17 +51,42 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
     setTimeout(() => setCopiedPhone(false), 2500);
   };
 
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const code = 'MSG-' + Math.floor(100000 + Math.random() * 900000);
-    setTrackingCode(code);
-    setSubmitted(true);
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('companyName', companyName);
+    formData.append('serviceInterest', serviceInterest);
+    formData.append('subject', subject || 'درخواست استعلام فنی و ساخت');
+    formData.append('message', message);
+    if (selectedFile) {
+      formData.append('attachment', selectedFile);
+      formData.append('file', selectedFile);
+    }
+
+    try {
+      const result = await submitContactMessage(formData);
+      if (result.success) {
+        setTrackingCode(result.trackingCode || 'MSG-' + Math.floor(100000 + Math.random() * 900000));
+        setSubmitted(true);
+      } else {
+        setSubmitError(result.message || 'خطا در ارسال پیام. لطفاً مجدداً تلاش فرمایید.');
+      }
+    } catch (err) {
+      setSubmitError('خطایی در ارتباط با سرور رخ داد.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name);
+      setSelectedFile(e.target.files[0]);
     }
   };
 
@@ -249,9 +278,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         setFullName('');
                         setPhone('');
                         setEmail('');
+                        setCompanyName('');
+                        setServiceInterest('general');
                         setSubject('');
                         setMessage('');
-                        setFileName(null);
+                        setSelectedFile(null);
                       }}
                       className="bg-[#0F612F] text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-[#0c4e26] transition-colors cursor-pointer"
                     >
@@ -262,6 +293,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 text-right">
                   
+                  {submitError && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
                   {/* Row 1: Name & Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -273,8 +311,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         required
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        placeholder="نام شما"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none"
+                        placeholder="مثال: مهندس احمدی"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none transition-all"
                       />
                     </div>
 
@@ -288,12 +326,46 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="09123456789"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none en-num dir-ltr text-right"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none en-num dir-ltr text-right transition-all"
                       />
                     </div>
                   </div>
 
-                  {/* Row 2: Email & Subject */}
+                  {/* Row 2: Company & Service Interest */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">
+                        نام شرکت / واحد صنعتی (اختیاری)
+                      </label>
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="مثال: صنایع خودرویی پیشتاز"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">
+                        دپارتمان یا خدمت مورد نظر
+                      </label>
+                      <select
+                        value={serviceInterest}
+                        onChange={(e) => setServiceInterest(e.target.value)}
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none bg-white text-gray-800 transition-all cursor-pointer"
+                      >
+                        <option value="general">استعلام عمومی / مشاوره فنی</option>
+                        <option value="mold_making">طراحی و ساخت قالب سنبه‌ماتریس و پروگرسیو</option>
+                        <option value="stamping">پرسکاری، کشش عمیق و برشکاری ورق</option>
+                        <option value="plastic_injection">تزریق پلاستیک قطعات صنعتی و مهندسی</option>
+                        <option value="cad_cam">مهندسی معکوس و نقشه‌کشی صنعتی CAD/CAM</option>
+                        <option value="maintenance">تعمیرات، نگهداری و اصلاح قالب</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row 3: Email & Subject */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-700 mb-1">
@@ -304,7 +376,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="name@company.com"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none en-num dir-ltr text-right"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none en-num dir-ltr text-right transition-all"
                       />
                     </div>
 
@@ -317,8 +389,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         required
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        placeholder="مثال: استعلام ساخت قالب پروگرسیو"
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none"
+                        placeholder="مثال: استعلام ساخت قالب پروگرسیو براکت"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -326,50 +398,75 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   {/* Attachment */}
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1">
-                      پیوست نقشه فنی یا تصویر قطعه (اختیاری):
+                      پیوست نقشه فنی، مدل سه‌بعدی یا تصویر قطعه (اختیاری):
                     </label>
-                    <label className="border-2 border-dashed border-gray-200 hover:border-[#0F612F] rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer transition-colors bg-gray-50/50">
+                    <label className="border-2 border-dashed border-gray-200 hover:border-[#0F612F] rounded-xl p-3.5 flex flex-col items-center justify-center cursor-pointer transition-colors bg-gray-50/60 hover:bg-emerald-50/20">
                       <UploadCloud className="w-5 h-5 text-gray-400 mb-1" />
-                      <span className="text-xs text-gray-600 font-medium">
-                        {fileName ? (
-                          <span className="text-[#0F612F] font-bold">فایل پیوست شد: {fileName}</span>
+                      <span className="text-xs text-gray-600 font-medium text-center">
+                        {selectedFile ? (
+                          <span className="text-[#0F612F] font-bold">
+                            فایل انتخاب شده: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                          </span>
                         ) : (
-                          'برای انتخاب فایل (DWG, DXF, STP, PDF, JPG) کلیک کنید'
+                          'برای انتخاب فایل (DWG, DXF, STP, STEP, PDF, JPG, PNG, ZIP) کلیک کنید'
                         )}
                       </span>
+                      <span className="text-[10px] text-gray-400 mt-1">حداکثر حجم مجاز: ۳۰ مگابایت</span>
                       <input 
                         type="file" 
                         className="hidden" 
-                        accept=".dwg,.dxf,.stp,.step,.pdf,.png,.jpg,.jpeg,.zip"
+                        accept=".dwg,.dxf,.stp,.step,.pdf,.png,.jpg,.jpeg,.zip,.rar,.igs,.iges"
                         onChange={handleFileChange}
                       />
                     </label>
+                    {selectedFile && (
+                      <div className="mt-1 flex items-center justify-between text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
+                        <span className="truncate max-w-[80%]">{selectedFile.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedFile(null)}
+                          className="text-red-500 hover:text-red-700 text-[11px] font-bold cursor-pointer"
+                        >
+                          حذف فایل
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Message */}
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1">
-                      متن پیام <span className="text-red-500">*</span>
+                      متن پیام و مشخصات استعلام <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       rows={4}
                       required
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder="متن پیام خود، تیراژ، مشخصات قطعه و سوالات خود را بنویسید..."
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none"
+                      placeholder="متن پیام خود، تیراژ پیش‌بینی شده، جنس ورق یا پلیمر، تناژ پرسکاری و الزامات ساخت را بنویسید..."
+                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0F612F] focus:border-[#0F612F] outline-none transition-all"
                     />
                   </div>
 
                   {/* Submit Button */}
-                  <div className="pt-3 flex items-center justify-between">
+                  <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <span className="text-[11px] text-gray-400">پاسخگویی سریع ظرف کمتر از <span className="en-num font-bold">24</span> ساعت کاری</span>
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-2 bg-[#0F612F] hover:bg-[#0c4e26] text-white px-6 py-3 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all border border-[#DECA19]/40 cursor-pointer"
+                      disabled={isSubmitting}
+                      className="inline-flex items-center justify-center gap-2 bg-[#0F612F] hover:bg-[#0c4e26] text-white px-6 py-3 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all border border-[#DECA19]/40 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Send className="w-4 h-4 text-[#DECA19]" />
-                      <span>ارسال نهایی پیام</span>
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>در حال ارسال پیام و فایل...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-[#DECA19]" />
+                          <span>ارسال نهایی پیام</span>
+                        </>
+                      )}
                     </button>
                   </div>
 

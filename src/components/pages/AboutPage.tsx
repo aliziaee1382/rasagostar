@@ -32,6 +32,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const { data } = useData();
   const companyInfo = data?.companyInfo || {};
   const partnerCompanies = data?.partners || [];
+  const aboutContent = data?.pagesContent?.about || {
+    headline: 'مجتمع صنعتی رسا قطعه گستر مهر؛ بیش از ۴ دهه پیشگامی در صنعت قالب و قطعه‌سازی',
+    subheadline: 'زنجیره یکپارچه از طراحی مهندسی CAD/CAM تا ساخت انواع قالب‌های صنعتی و تولید انبوه قطعات پرسی و تزریق پلاستیک',
+    historyTitle: 'داستان شکل‌گیری و تاریخچه کارخانه',
+    historyParagraph1: 'کارخانه رسا قطعه گستر مهر با تکیه بر تجربه ارزشمند و مستمر از سال ۱۳۷۶، فعالیت خود را با هدف خودکفایی صنایع کشور در زمینه ساخت قالب‌های دقیق سنبه-ماتریس و پروگرسیو آغاز نمود.',
+    historyParagraph2: 'امروزه با تجمیع سالن‌های تخصصی قالب‌سازی، پرسکاری سنگین تا ۴۰۰ تن، برش فایبر لیزر و تزریق پلاستیک مهندسی تحت یک مدیریت متمرکز، کلیه دغدغه‌های کارفرمایان در انطباق قطعه با قالب برطرف شده است.',
+    missionTitle: 'ماموریت و چشم‌انداز ما',
+    missionDescription: 'تعهد ما تضمین ۱۰۰ درصدی دقت ابعادی، کاهش بهای تمام‌شده تولید با مهندسی چیدمان متریال، و تسریع فرآیند ساخت نمونه تا تحویل تیراژ انبوه به صنایع کشور می‌باشد.'
+  };
 
   const getStepIcon = (iconName: string) => {
 
@@ -77,17 +86,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white mb-3 tracking-tight">
-            درباره کارخانه صنعتی <span className="text-[#DECA19]">رسا قطعه گستر مهر</span>
+            درباره کارخانه صنعتی <span className="text-[#DECA19]">{companyInfo.name || 'رسا قطعه گستر مهر'}</span>
           </h1>
           
           <div className="w-24 h-1 bg-[#DECA19] rounded-full mb-4" />
           
           <p className="text-sm sm:text-base text-emerald-100 font-bold mb-2">
-            شعار محوری: <span className="text-[#DECA19]">«تجربه، تخصص و توانمندی در خدمت تولید»</span>
+            شعار محوری: <span className="text-[#DECA19]">«{aboutContent.headline}»</span>
           </p>
 
           <p className="text-xs sm:text-sm text-gray-300 max-w-3xl leading-relaxed font-light">
-            پیشگام در طراحی و ساخت قالب‌های صنعتی، پرسکاری سنگین و سبک تا <span className="en-num font-bold">400</span> تن، تزریق پلاستیک مهندسی، برش لیزر فایبر و مدیریت یکپارچه زنجیره تامین قطعات صنعتی.
+            {aboutContent.subheadline}
           </p>
         </div>
       </section>
@@ -125,16 +134,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-snug">
-              تعهد به تعالی صنعتی، <br />
-              <span className="text-[#0F612F]">بیش از چهار دهه حضور موثر در زنجیره تولید کشور</span>
+              {aboutContent.historyTitle}
             </h2>
 
             <div className="space-y-3 text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
               <p>
-                شرکت <strong className="text-gray-900 font-bold">رسا قطعه گستر مهر</strong> (شماره ثبت رسمی: <span className="en-num font-bold">1876</span>) با تکیه بر بیش از <span className="en-num font-bold">40</span> سال سابقه اساتید بنیان‌گذار در زمینه ماشین‌کاری، قالب‌سازی و تولید قطعات فلزی، هم‌اکنون به عنوان یکی از قطب‌های توانمند و معتبر تولید قطعات صنعتی در کشور شناخته می‌شود.
+                {aboutContent.historyParagraph1}
               </p>
               <p>
-                مجموعه با در اختیار داشتن <span className="en-num font-bold">2000</span> متر مربع مساحت کل و <span className="en-num font-bold">1200</span> متر مربع سالن تولید مجهز به پرس‌های ضربه‌ای و هیدرولیک تا تناژ <span className="en-num font-bold">400</span> تن، دستگاه‌های مدرن تزریق پلاستیک، میز برش لیزر فایبر <span className="en-num font-bold">2×6</span> متر و واحد اختصاصی ساخت قالب، صفر تا صد چرخه تبدیل نقشه فنی یا نمونه اولیه به محصول نهایی باکیفیت را در یک مکان پوشش می‌دهد.
+                {aboutContent.historyParagraph2}
               </p>
             </div>
 

@@ -1,4 +1,198 @@
-import { ServiceDetail, PortfolioItem, CompanyStat, TimelineMilestone, PartnerCompany, ProductionChainStep, SiteContentData, IntegratedProcessStep } from '../types';
+import { 
+  ServiceDetail, 
+  PortfolioItem, 
+  CompanyStat, 
+  TimelineMilestone, 
+  PartnerCompany, 
+  ProductionChainStep, 
+  SiteContentData, 
+  IntegratedProcessStep,
+  ThemeSettings,
+  HeroSlide,
+  PagesContentData,
+  ComplementaryService
+} from '../types';
+
+export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
+  primaryColor: '#0F612F',
+  primaryHoverColor: '#0c4e26',
+  secondaryColor: '#DECA19',
+  secondaryHoverColor: '#c4b214',
+  accentColor: '#10b981',
+  darkBgColor: '#0A3319',
+  siteTitle: 'رسا قطعه گستر مهر | طراحی و ساخت قالب، پرسکاری سنگین و تزریق پلاستیک',
+  logoUrl: '',
+  copyrightText: 'کلیه حقوق مادی و معنوی برای کارخانه رسا قطعه گستر مهر محفوظ می‌باشد.',
+  enableFloatingQuoteBtn: true
+};
+
+export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
+  {
+    id: 'slide_1',
+    title: 'مدیریت یکپارچه زنجیره تولید صنعتی',
+    subtitle: 'از ایده و طراحی CAD/CAM تا ساخت قالب، پرسکاری ۴۰۰ تن و تحویل قطعه نهایی',
+    badge: 'بیش از ۴۰ سال سابقه درخشان در صنعت',
+    tagline: 'تجربه، تخصص و توانمندی در خدمت تولید ملی',
+    slogan: 'زنجیره یکپارچه از ساخت قالب تا تولید انبوه قطعات فلزی و پلیمری',
+    description: 'کارخانه رسا قطعه گستر مهر (ثبت ۱۸۷۶) با بهره‌گیری از ماشین‌آلات پیشرفته CNC، پرس‌های سنگین هیدرولیک و ضربه‌ای تا ۴۰۰ تن و دستگاه‌های تزریق مدرن، زنجیره کامل تولید را زیر یک سقف فراهم آورده است.',
+    bgImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=2000&q=80',
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=2000&q=80',
+    primaryBtnText: 'استعلام قیمت و مشاوره ساخت',
+    primaryBtnAction: 'contact',
+    secondaryBtnText: 'مشاهده خطوط تولید و خدمات',
+    secondaryBtnAction: 'services',
+    bulletPoints: [
+      'طراحی و ساخت قالب‌های سنبه‌ماتریس و پروگرسیو',
+      'پرسکاری سنگین تا ۴۰۰ تن هیدرولیک و ضربه‌ای',
+      'تزریق پلاستیک مهندسی با دستگاه‌های مدرن',
+      'برش دقیق لیزر فایبر با میز ۲×۶ متر'
+    ],
+    metrics: [
+      { label: 'سابقه فعالیت', value: '+40 سال' },
+      { label: 'ظرفیت پرسکاری', value: '400 تن' }
+    ],
+    order: 1,
+    isActive: true
+  },
+  {
+    id: 'slide_2',
+    title: 'طراحی و ساخت تخصصی انواع قالب صنعتی',
+    subtitle: 'قالب‌های پروگرسیو، سنبه‌ماتریس، کشش عمیق و تزریق پلاستیک مهندسی',
+    badge: 'مهندسی معکوس و نقشه‌کشی دقیق CAD/CAM',
+    tagline: 'دقت میکرونی و متریال سخت‌کاری شده استاندارد',
+    slogan: 'طراحی بهینه قالب‌ها با نرم‌افزارهای سالیدورکس و ماشین‌کاری دقیق CNC',
+    description: 'طراحی بهینه با نرم‌افزارهای سالیدورکس و کتیا، ماشین‌کاری قطعات با فرز و تراش CNC و اسپارک دقیق به همراه تست کامل در سالن‌های پرسکاری و تزریق خود مجموعه.',
+    bgImage: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=2000&q=80',
+    image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=2000&q=80',
+    primaryBtnText: 'سفارش ساخت قالب',
+    primaryBtnAction: 'contact',
+    secondaryBtnText: 'مشاهده نمونه‌کارهای قالب‌سازی',
+    secondaryBtnAction: 'portfolio',
+    bulletPoints: [
+      'طراحی مهندسی با نرم‌افزارهای SolidWorks و CATIA',
+      'ماشین‌کاری CNC، فرز، تراش و اسپارک دقیق',
+      'تست و سمپل‌گیری نمونه اولیه در سالن تولید',
+      'گارانتی انطباق کامل قطعه تولیدی با نقشه'
+    ],
+    metrics: [
+      { label: 'دقت ابعادی', value: '±0.02 mm' },
+      { label: 'تست در محل', value: '100% تضمینی' }
+    ],
+    order: 2,
+    isActive: true
+  },
+  {
+    id: 'slide_3',
+    title: 'پرسکاری ضربه‌ای و هیدرولیک تا ۴۰۰ تن',
+    subtitle: 'تولید انبوه قطعات پرسی خودرو، لوازم خانگی، کشاورزی و نفت و گاز',
+    badge: 'کشش عمیق، فرم‌دهی و برش با بالاترین تیراژ',
+    tagline: 'تضمین کیفیت ۱۰۰٪ با کنترل تلرانس‌های مهندسی',
+    slogan: 'تولید انبوه با پرس‌های ضربه‌ای و هیدرولیک سنگین برای صنایع مادر کشور',
+    description: 'مجهز به خطوط پرس ضربه‌ای ۳ تا ۱۲۰ تن و پرس‌های سنگین هیدرولیک ۱۵۰، ۲۵۰ و ۴۰۰ تن برای تولید قطعات حساس فلزی از انواع ورق‌های ST12, ST14, استیل و آلومینیوم.',
+    bgImage: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80',
+    primaryBtnText: 'استعلام پرسکاری تیراژ بالا',
+    primaryBtnAction: 'contact',
+    secondaryBtnText: 'آشنایی با توانمندی‌ها',
+    secondaryBtnAction: 'about',
+    bulletPoints: [
+      'پرس‌های ضربه‌ای ۳ تا ۱۲۰ تن با سرعت و تیراژ بالا',
+      'پرس‌های هیدرولیک ۱۵۰، ۲۵۰ و ۴۰۰ تن سنگین',
+      'کشش عمیق، فرم‌دهی و برش ورق‌های آلیاژی',
+      'کنترل تلرانس مهندسی و بازرسی ابعادی مستمر'
+    ],
+    metrics: [
+      { label: 'حداکثر تناژ', value: '400 تن' },
+      { label: 'کنترل کیفیت', value: '100%' }
+    ],
+    order: 3,
+    isActive: true
+  }
+];
+
+export const DEFAULT_PAGES_CONTENT: PagesContentData = {
+  home: {
+    heroBadge: 'کارخانه صنعتی و قالب‌سازی رسا قطعه گستر مهر',
+    heroTitle: 'زنجیره یکپارچه تولید قطعات فلزی و پلیمری',
+    heroSubtitle: 'صفر تا صد فرآیند از طراحی قالب تا تولید نهایی در کارخانه ۲۰۰۰ متری',
+    heroDescription: 'کاهش چشمگیر هزینه‌ها و زمان تحویل با تجمیع قالب‌سازی، پرسکاری تا ۴۰۰ تن، تزریق پلاستیک و برش لیزر فایبر در یک مجموعه صنعتی مجهز.',
+    advantagesTitle: 'چرا صنایع برتر کشور رسا قطعه گستر مهر را انتخاب می‌کنند؟',
+    advantagesSubtitle: 'مزایای رقابتی برجسته و تمایز کارخانه ما در مدیریت زنجیره تامین صنعتی',
+    chainTitle: 'مراحل ۶گانه فرآیند یکپارچه تولید',
+    chainSubtitle: 'گام‌به‌گام از ایده تا تحویل قطعه نهایی با سیستم کنترل کیفیت مستمر',
+    ctaTitle: 'آماده شروع پروژه یا استعلام قیمت ساخت قطعه هستید؟',
+    ctaSubtitle: 'مهندسان و کارشناسان فنی ما آماده ارائه مشاوره تخصصی، بررسی نقشه‌های فنی و برآورد زمان و هزینه ساخت می‌باشند.',
+    ctaButtonText: 'ارسال نقشه و استعلام آنلاین'
+  },
+  about: {
+    heroTitle: 'بیش از ۴۰ سال تعهد و نوآوری در صنعت کشور',
+    heroSubtitle: 'داستان شکل‌گیری، چشم‌انداز و استانداردهای کیفی کارخانه رسا قطعه گستر مهر',
+    historyTitle: 'تاریخچه و مسیر رشد چهار دهه‌ای',
+    historyText: 'شرکت رسا قطعه گستر مهر از سال ۱۳۶۳ با تاسیس کارگاه قالب‌سازی و ماشین‌کاری دقیق پایه‌گذاری شد. در طول دهه‌های گذشته با توسعه مداوم خطوط پرسکاری ضربه‌ای و هیدرولیک و راه‌اندازی بخش تزریق پلاستیک مهندسی، به یکی از معتبرترین پیمانکاران زنجیره تامین قطعات خودرو و لوازم خانگی بدل گردید.',
+    missionTitle: 'ماموریت ما در صنعت',
+    missionText: 'ارائه راهکارهای جامع و یکپارچه صنعتی برای صنایع کشور با تمرکز بر بالاترین دقت ساخت، قیمت رقابتی، تحویل به موقع و به صفر رساندن ناهماهنگی‌های میان قالب‌ساز و تولیدکننده قطعه.',
+    visionTitle: 'چشم‌انداز و توسعه آینده',
+    visionText: 'تبدیل شدن به قطب برتر و مرجع طراحی و ساخت قالب‌های پروگرسیو سنگین و قطعات های‌تک خودرویی در منطقه با به‌کارگیری آخرین دستاوردهای اتوماسیون صنعتی و استانداردهای جهانی.',
+    qualityTitle: 'خط‌مشی کیفیت و استانداردهای مهندسی',
+    qualityText: 'تمامی مراحل تولید از ورود متریال اولیه تا بسته‌بندی نهایی تحت نظارت دقیق واحد کنترل کیفیت (QC) و با تجهیزات کالیبره‌شده سنجش ابعادی و سختی‌سنجی صورت می‌پذیرد.',
+    ceoMessageTitle: 'پیام مدیریت عامل',
+    ceoMessageText: 'اعتقاد ما بر این است که صنعت پایدار بر پایه تعهد به مشتری، کیفیت بی‌قیدوشرط و انطباق مستمر با نیازهای روز مهندسی بنا می‌شود. رسا قطعه گستر مهر همواره در کنار شماست تا ایده‌های تولیدی شما را با بالاترین بهره‌وری به واقعیت تبدیل کند.',
+    ceoName: 'مدیریت کارخانه',
+    ceoRole: 'رئیس هیئت مدیره و مدیرعامل'
+  },
+  services: {
+    heroTitle: 'خدمات و توانمندی‌های خطوط تولید',
+    heroSubtitle: 'معرفی جامع ۴ حوزه اصلی و خطوط تخصصی ساخت و فرم‌دهی قطعات',
+    introTitle: 'توان فنی و تجهیزات پیشرفته کارخانه',
+    introText: 'مجموعه رسا قطعه گستر مهر با برخورداری از تجهیزات تخصصی قالب‌سازی، سالن‌های پرسکاری سنگین و نیمه‌سنگین، خطوط تزریق پلاستیک مدرن و سیستم‌های برش لیزر فایبر ۲×۶ متر، آماده ارائه خدمات به کلیه صنایع کشور است.',
+    complementaryTitle: 'خدمات تکمیلی و زنجیره تامین',
+    complementarySubtitle: 'پوشش کامل خدمات جانبی جهت تحویل قطعه ۱۰۰٪ آماده مونتاژ',
+    consultationTitle: 'نیاز به مشاوره فنی یا انتخاب فرآیند تولید مناسب دارید؟',
+    consultationSubtitle: 'تیم مهندسی ما آماده پاسخگویی به ابهامات فنی و ارائه بهینه‌ترین روش ساخت متناسب با تیراژ شماست.',
+    consultationButtonText: 'تماس با واحد مهندسی'
+  },
+  contact: {
+    heroTitle: 'ارتباط مستقیم با کارخانه و کارشناسان فنی',
+    heroSubtitle: 'دریافت استعلام قیمت، مشاوره حضوری در کارخانه و ارسال نقشه‌های فنی مهندسی',
+    formTitle: 'فرم ارسال استعلام ساخت و درخواست پیش‌فاکتور',
+    formSubtitle: 'مشخصات و الزامات قطعه مورد نظر خود را ثبت نمایید تا در کمتر از ۲۴ ساعت کاری بررسی گردد.',
+    formButtonText: 'ارسال نهایی استعلام و نقشه',
+    faqTitle: 'پرسش‌های متداول مشتریان و صنعتگران',
+    faqSubtitle: 'پاسخ به سوالات پرتکرار پیرامون نحوه سفارش، تیراژ، قراردادها و بازرسی قطعات',
+    responsePromiseText: 'پاسخگویی سریع ظرف کمتر از ۲۴ ساعت کاری توسط مهندسان طراح'
+  }
+};
+
+export const COMPLEMENTARY_SERVICES: ComplementaryService[] = [
+  {
+    id: 'welding',
+    title: 'جوشکاری تخصصی صنعتی و مقاومتی',
+    description: 'انجام انواع جوشکاری CO2، جوش آرگون (TIG/MIG)، نقطه‌جوش و پرس‌جوش هماهنگ با خطوط پرسکاری جهت قطعات ترکیبی فلزی.',
+    icon: 'Flame',
+    tag: 'جوشکاری مقاومتی و CO2'
+  },
+  {
+    id: 'electroplating',
+    title: 'پوشش‌دهی سطحی، آبکاری و گالوانیزه',
+    description: 'خدمات آبکاری الکترولیز نیکل-کروم، گالوانیزه گرم و سرد، داکرومات و زرد/سفید با تست مقاومت در برابر سالت اسپری (خوردگی).',
+    icon: 'ShieldCheck',
+    tag: 'آبکاری و تست سالت اسپری'
+  },
+  {
+    id: 'powder_coating',
+    title: 'رنگ‌آمیزی پودری الکترواستاتیک کوره',
+    description: 'خط رنگ پودری پیوسته همراه با خط شستشوی چربی‌گیری و فسفاته جهت ایجاد پوشش‌های مقاوم و باکیفیت در انواع رال‌های رنگی.',
+    icon: 'Palette',
+    tag: 'رنگ پودری الکترواستاتیک'
+  },
+  {
+    id: 'die_casting',
+    title: 'دایکست و ریخته‌گری تحت فشار آلومینیوم',
+    description: 'تولید قطعات آلومینیومی و زاماک با قالب‌های دایکست دقیق و ماشین‌آلات پیشرفته ریخته‌گری تحت فشار بالا.',
+    icon: 'Layers',
+    tag: 'دایکست آلومینیوم و زاماک'
+  }
+];
 
 export const COMPANY_INFO = {
   name: 'رسا قطعه گستر مهر',
@@ -661,10 +855,14 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
 ];
 
 export const DEFAULT_SITE_DATA: SiteContentData = {
+  themeSettings: DEFAULT_THEME_SETTINGS,
+  heroSlides: DEFAULT_HERO_SLIDES,
+  pagesContent: DEFAULT_PAGES_CONTENT,
   companyInfo: COMPANY_INFO,
   stats: COMPANY_STATS,
   aboutInfrastructureStats: ABOUT_INFRASTRUCTURE_STATS,
   services: SERVICES_DATA,
+  complementaryServices: COMPLEMENTARY_SERVICES,
   portfolioItems: PORTFOLIO_ITEMS,
   partners: PARTNER_COMPANIES,
   integratedProcessSteps: INTEGRATED_PROCESS_STEPS,

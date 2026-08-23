@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageId, ServiceCategory, PortfolioItem } from '../../types';
 import { useData } from '../../context/DataContext';
+import { DEFAULT_HERO_SLIDES } from '../../data/mockData';
 import { 
   Award, 
   Factory, 
@@ -32,17 +33,6 @@ interface HomePageProps {
   onSelectPortfolioItem: (item: PortfolioItem) => void;
 }
 
-interface HeroSlide {
-  id: ServiceCategory;
-  title: string;
-  slogan: string;
-  description: string;
-  badge: string;
-  image: string;
-  metrics: { label: string; value: string }[];
-  bulletPoints: string[];
-}
-
 export const HomePage: React.FC<HomePageProps> = ({
   onNavigate,
   onOpenService,
@@ -55,90 +45,22 @@ export const HomePage: React.FC<HomePageProps> = ({
   const portfolioItems = data?.portfolioItems || [];
   const workflowSteps = data?.integratedProcessSteps || [];
   const partnerCompanies = data?.partners || [];
+  const heroSlides = data?.heroSlides && data.heroSlides.length > 0 ? data.heroSlides : DEFAULT_HERO_SLIDES;
+  const homeContent = data?.pagesContent?.home || {};
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
-
-  // 4 Specific Hero Slides based on company catalog
-  const heroSlides: HeroSlide[] = [
-    {
-      id: 'mold_making',
-      title: 'طراحی و ساخت قالب‌های صنعتی',
-      slogan: 'مجهز به ماشین‌آلات پیشرفته اسپارک، فرز و دریل رادیال با ۴۰ سال تجربه',
-      description: 'طراحی، ساخت، مونتاژ، تست و اصلاح انواع قالب‌های فلزی، پروگرسیو، سنبه-ماتریس، برش، پانچ، خم، فرم‌دهی، قالب‌های تزریق پلاستیک و دایکست.',
-      badge: 'واحد تخصصی قالب‌سازی صنعتی',
-      image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=80',
-      metrics: [
-        { label: 'فرآیند یکپارچه', value: '۴ مرحله' },
-        { label: 'سابقه تخصصی', value: '۴۰+ سال' },
-      ],
-      bulletPoints: [
-        'قالب‌های پروگرسیو، سنبه-ماتریس و کشش عمیق',
-        'مجهز به اسپارک، سنگ مغناطیسی، دریل رادیال، فرز و تراش',
-        'فرآیند ۴ مرحله‌ای: طراحی ➔ ساخت ➔ مونتاژ ➔ تست و اصلاح',
-        'تولید نمونه اولیه و اصلاح فوری قالب در محل کارخانه',
-      ],
-    },
-    {
-      id: 'stamping',
-      title: 'پرسکاری سبک و سنگین تا ۴۰۰ تن',
-      slogan: 'تولید قطعات پرسی با پرس‌های ضربه‌ای و هیدرولیک ۱۵۰، ۲۵۰ و ۴۰۰ تن',
-      description: 'خطوط پرسکاری مجهز به پرس‌های ضربه‌ای (لنگ) از ۳ تا ۱۲۰ تن و پرس‌های هیدرولیک سنگین ۱۵۰، ۲۵۰ و ۴۰۰ تن برای پانچ، خمکاری، فرم‌دهی و کشش ورق.',
-      badge: 'خطوط پرسکاری سبک و سنگین',
-      image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1600&q=80',
-      metrics: [
-        { label: 'حداکثر توان پرس', value: '۴۰۰ تن' },
-        { label: 'پرس‌های لنگ', value: '۳ تا ۱۲۰ تن' },
-      ],
-      bulletPoints: [
-        'پرس‌های ضربه‌ای (لنگ) از ۳ تا ۱۲۰ تن',
-        'پرس‌های هیدرولیک سنگین ۱۵۰، ۲۵۰ و ۴۰۰ تن',
-        'پانچ و سوراخکاری، خمکاری، فرم‌دهی و کشش دقیق ورق',
-        'تولید انبوه مطابق نقشه مهندسی و نمونه فیزیکی',
-      ],
-    },
-    {
-      id: 'laser_cutting',
-      title: 'برش دقیق لیزر و فرآوری ورق',
-      slogan: 'برش لیزر ورق با ابعاد میز ۲×۶ متر و تا ضخامت ۲۰ میلیمتر',
-      description: 'برش فوق‌دقیق انواع ورق‌های آهن، استیل و آلومینیوم با تکنولوژی فایبر لیزر، چیدمان بهینه (Nesting) و آماده‌سازی قطعات جهت پرسکاری و جوشکاری.',
-      badge: 'برش لیزر فایبر بزرگ‌مقیاس',
-      image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1600&q=80',
-      metrics: [
-        { label: 'ابعاد میز کار', value: '۲ × ۶ متر' },
-        { label: 'حداکثر ضخامت', value: 'تا ۲۰ mm' },
-      ],
-      bulletPoints: [
-        'ابعاد میز کار بزرگ‌مقیاس ۲ × ۶ متر',
-        'حداکثر ضخامت برش انواع ورق تا ۲۰ میلی‌متر',
-        'چیدمان بهینه (Nesting) جهت کاهش ضایعات و هزینه متریال',
-        'لبه‌های برش تمیز بدون پلیسه و آماده پرسکاری و جوشکاری',
-      ],
-    },
-    {
-      id: 'plastic_injection',
-      title: 'تزریق پلاستیک قطعات مهندسی',
-      slogan: 'تولید قطعات با ماشین‌آلات پیشرفته Battenfeld تا ظرفیت ۲۰۰ گرم',
-      description: 'تولید قطعات پلیمری فنی و صنعتی با ۲ دستگاه Battenfeld آلمان تا ظرفیت ۲۰۰ گرم با مزیت انحصاری ترکیب قالب‌سازی داخلی و امکان اصلاح سریع قالب.',
-      badge: 'خطوط تزریق پلاستیک مهندسی',
-      image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80',
-      metrics: [
-        { label: 'تجهیزات تزریق', value: '۲ دستگاه' },
-        { label: 'ظرفیت هر قطعه', value: 'تا ۲۰۰ گرم' },
-      ],
-      bulletPoints: [
-        'دارای ۲ دستگاه تزریق برند Battenfeld آلمان',
-        'ظرفیت تزریق انواع قطعات مهندسی تا ۲۰۰ گرم',
-        'ترکیب توانمندی قالب‌سازی داخلی و تزریق در یک مجموعه',
-        'امکان تست، عیب‌یابی و اصلاح فوری قالب در محل کارخانه',
-      ],
-    },
-  ];
-
-  // Auto-play timer for Hero Carousel (5 seconds per slide)
+  // Guard against out of range slide index
   useEffect(() => {
-    if (isPaused) return;
+    if (currentSlide >= heroSlides.length) {
+      setCurrentSlide(0);
+    }
+  }, [heroSlides.length, currentSlide]);
+
+  // Auto-play timer for Hero Carousel
+  useEffect(() => {
+    if (isPaused || heroSlides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5500);
@@ -153,7 +75,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   };
 
-  const activeSlideData = heroSlides[currentSlide];
+  const activeSlideData = heroSlides[currentSlide] || heroSlides[0] || DEFAULT_HERO_SLIDES[0];
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -201,7 +123,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* Top Badge */}
             <div className="inline-flex items-center gap-2 bg-[#DECA19]/15 text-[#DECA19] px-4 py-1.5 rounded-full text-xs font-bold border border-[#DECA19]/30">
               <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>{activeSlideData.badge} • رسا قطعه گستر مهر</span>
+              <span>{activeSlideData.badge || 'بیش از ۴۰ سال سابقه درخشان در صنعت'} • {companyInfo.name || 'رسا قطعه گستر مهر'}</span>
             </div>
 
             {/* Slide Title */}
@@ -210,11 +132,13 @@ export const HomePage: React.FC<HomePageProps> = ({
             </h1>
 
             {/* Slide Slogan / Key Punchline */}
-            <div className="p-3 sm:p-3.5 bg-white/5 border-r-4 border-[#DECA19] rounded-l-xl backdrop-blur-xs">
-              <p className="text-sm sm:text-base font-bold text-[#DECA19] leading-snug">
-                {activeSlideData.slogan}
-              </p>
-            </div>
+            {(activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle) && (
+              <div className="p-3 sm:p-3.5 bg-white/5 border-r-4 border-[#DECA19] rounded-l-xl backdrop-blur-xs">
+                <p className="text-sm sm:text-base font-bold text-[#DECA19] leading-snug">
+                  {activeSlideData.slogan || activeSlideData.tagline || activeSlideData.subtitle}
+                </p>
+              </div>
+            )}
 
             {/* Description */}
             <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-light max-w-2xl text-justify">
@@ -222,33 +146,51 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
 
             {/* Dynamic Bullet Points */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs text-gray-200">
-              {activeSlideData.bulletPoints.map((point, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#DECA19] shrink-0 mt-0.5" />
-                  <span className="leading-snug">{point}</span>
-                </div>
-              ))}
-            </div>
+            {(activeSlideData.bulletPoints && activeSlideData.bulletPoints.length > 0) && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs text-gray-200">
+                {activeSlideData.bulletPoints.map((point, idx) => (
+                  <div key={idx} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#DECA19] shrink-0 mt-0.5" />
+                    <span className="leading-snug">{point}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-3.5 pt-4">
               <button
                 id="hero-services-cta"
-                onClick={() => onOpenService(activeSlideData.id)}
+                onClick={() => {
+                  const action = activeSlideData.secondaryBtnAction || 'services';
+                  if (['mold_making', 'stamping', 'plastic_injection', 'laser_cutting'].includes(action)) {
+                    onOpenService(action as ServiceCategory);
+                  } else if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
+                    onNavigate(action as PageId);
+                  } else {
+                    onNavigate('services');
+                  }
+                }}
                 className="bg-[#0F612F] hover:bg-[#0c4e26] text-white px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all border border-[#DECA19]/50 flex items-center gap-2 cursor-pointer active:scale-95"
               >
-                <span>مشاهده خدمات و تجهیزات</span>
+                <span>{activeSlideData.secondaryBtnText || 'مشاهده خطوط تولید و خدمات'}</span>
                 <ChevronLeft className="w-4 h-4 text-[#DECA19]" />
               </button>
 
               <button
                 id="hero-contact-cta"
-                onClick={() => onNavigate('contact')}
+                onClick={() => {
+                  const action = activeSlideData.primaryBtnAction || 'contact';
+                  if (['home', 'about', 'services', 'portfolio', 'contact'].includes(action)) {
+                    onNavigate(action as PageId);
+                  } else {
+                    onNavigate('contact');
+                  }
+                }}
                 className="bg-[#DECA19] hover:bg-[#ebd828] text-gray-950 px-6 py-3.5 rounded-xl font-black text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer active:scale-95"
               >
                 <PhoneCall className="w-4 h-4 text-gray-900" />
-                <span>استعلام قیمت و مشاوره فنی</span>
+                <span>{activeSlideData.primaryBtnText || 'استعلام قیمت و مشاوره فنی'}</span>
               </button>
             </div>
 
@@ -258,8 +200,8 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="lg:col-span-5">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#DECA19]/50 group bg-gray-900">
               <img 
-                key={activeSlideData.image}
-                src={activeSlideData.image} 
+                key={activeSlideData.image || activeSlideData.bgImage}
+                src={activeSlideData.image || activeSlideData.bgImage} 
                 alt={activeSlideData.title}
                 referrerPolicy="no-referrer"
                 className="w-full h-[320px] sm:h-[390px] object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-95 animate-fadeIn"
@@ -276,17 +218,19 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* Metrics Overlay on bottom */}
               <div className="absolute bottom-5 right-5 left-5 text-right space-y-2.5">
-                <div className="grid grid-cols-2 gap-2">
-                  {activeSlideData.metrics.map((metric, idx) => (
-                    <div key={idx} className="bg-[#0c2214]/90 backdrop-blur-md p-2.5 rounded-xl border border-[#DECA19]/40 text-center">
-                      <span className="block text-[11px] text-gray-300">{metric.label}</span>
-                      <span className="text-sm font-black text-[#DECA19] en-num">{metric.value}</span>
-                    </div>
-                  ))}
-                </div>
+                {(activeSlideData.metrics && activeSlideData.metrics.length > 0) && (
+                  <div className="grid grid-cols-2 gap-2">
+                    {activeSlideData.metrics.map((metric, idx) => (
+                      <div key={idx} className="bg-[#0c2214]/90 backdrop-blur-md p-2.5 rounded-xl border border-[#DECA19]/40 text-center">
+                        <span className="block text-[11px] text-gray-300">{metric.label}</span>
+                        <span className="text-sm font-black text-[#DECA19] en-num">{metric.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="flex items-center justify-between text-[11px] text-gray-300 pt-1">
                   <span>تولید مطابق نقشه و نمونه</span>
-                  <span className="text-[#DECA19] font-bold">شهرک صنعتی کارآفرینان جاجرود</span>
+                  <span className="text-[#DECA19] font-bold">{companyInfo.name || 'شرکت رسا قطعه گستر مهر'}</span>
                 </div>
               </div>
             </div>

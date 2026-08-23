@@ -39,12 +39,13 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
 
   const filteredItems = products.filter((item) => {
     const matchesCategory = selectedFilter === 'all' || item.category === selectedFilter;
+    const query = searchQuery.toLowerCase();
     const matchesSearch = 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.material.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.application.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      (item.title || '').toLowerCase().includes(query) ||
+      (item.description || '').toLowerCase().includes(query) ||
+      (item.material || '').toLowerCase().includes(query) ||
+      (item.application || '').toLowerCase().includes(query) ||
+      (item.tags || []).some(t => t.toLowerCase().includes(query));
 
     return matchesCategory && matchesSearch;
   });
