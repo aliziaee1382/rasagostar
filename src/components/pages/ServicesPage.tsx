@@ -105,6 +105,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       {/* Interactive Tabs for the 4 Core Services */}
       <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         
+        {/* Guide Text */}
+        <p className="text-xs sm:text-sm text-gray-600 font-medium mb-2.5 sm:mb-3.5 text-right flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-[#0F612F] inline-block animate-pulse" />
+          <span>جهت مشاهده اطلاعات هر کدام روی آن‌ها کلیک کنید</span>
+        </p>
+
         {/* Service Tab Buttons */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-8">
           {servicesData.map((srv, index) => {

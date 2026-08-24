@@ -129,76 +129,173 @@ export const PagesContentTab: React.FC = () => {
             محتوا و بیوگرافی صفحه «درباره ما»
           </h4>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">
-              تیتر اصلی معرفی (H1 Headline)
-            </label>
-            <input
-              type="text"
-              value={pages.about.headline}
-              onChange={(e) => updateSubPage('about', 'headline', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-bold"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                تیتر اصلی معرفی (H1 Headline)
+              </label>
+              <input
+                type="text"
+                value={pages.about?.headline || ''}
+                onChange={(e) => updateSubPage('about', 'headline', e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-bold text-[#0F612F]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                زیرتیتر توضیحی هدر
+              </label>
+              <input
+                type="text"
+                value={pages.about?.subheadline || ''}
+                onChange={(e) => updateSubPage('about', 'subheadline', e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">
-              زیرتیتر توضیحی هدر
-            </label>
-            <input
-              type="text"
-              value={pages.about.subheadline}
-              onChange={(e) => updateSubPage('about', 'subheadline', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">
-              عنوان بخش تاریخچه
-            </label>
-            <input
-              type="text"
-              value={pages.about.historyTitle}
-              onChange={(e) => updateSubPage('about', 'historyTitle', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-bold"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">
-              پاراگراف اول تاریخچه کارخانه
+              پاراگراف اول معرفی و تاریخچه کارخانه
             </label>
             <textarea
               rows={3}
-              value={pages.about.historyParagraph1}
-              onChange={(e) => updateSubPage('about', 'historyParagraph1', e.target.value)}
+              value={pages.about?.historyParagraph1 || pages.about?.historyText || ''}
+              onChange={(e) => {
+                updateSubPage('about', 'historyParagraph1', e.target.value);
+                updateSubPage('about', 'historyText', e.target.value);
+              }}
               className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
             />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">
-              پاراگراف دوم تاریخچه و چشم‌انداز
+              پاراگراف دوم معرفی، چشم‌انداز و ماموریت
             </label>
             <textarea
               rows={3}
-              value={pages.about.historyParagraph2}
-              onChange={(e) => updateSubPage('about', 'historyParagraph2', e.target.value)}
+              value={pages.about?.historyParagraph2 || pages.about?.missionDescription || pages.about?.missionText || ''}
+              onChange={(e) => {
+                updateSubPage('about', 'historyParagraph2', e.target.value);
+                updateSubPage('about', 'missionDescription', e.target.value);
+              }}
               className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">
-              متن ماموریت و ارزش‌های سازمانی
-            </label>
-            <textarea
-              rows={2}
-              value={pages.about.missionDescription}
-              onChange={(e) => updateSubPage('about', 'missionDescription', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
-            />
+          {/* Ethics & Core Values */}
+          <div className="pt-4 border-t border-gray-200/80 space-y-3">
+            <h5 className="text-xs font-black text-gray-900 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#DECA19]" />
+              <span>منشور اخلاقی و ارکان تعهد سازمانی (۳ ستون)</span>
+            </h5>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">بج بالای سکشن منشور اخلاقی</label>
+                <input
+                  type="text"
+                  value={pages.about?.ethicsTitle || 'منشور اخلاقی و تعهدات بنیادین'}
+                  onChange={(e) => updateSubPage('about', 'ethicsTitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">تیتر اصلی سکشن تعهدات</label>
+                <input
+                  type="text"
+                  value={pages.about?.ethicsSubtitle || 'سه رکن اساسی تعهد سازمانی در رسا قطعه گستر مهر'}
+                  onChange={(e) => updateSubPage('about', 'ethicsSubtitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Quality Policy & Certifications */}
+          <div className="pt-4 border-t border-gray-200/80 space-y-3">
+            <h5 className="text-xs font-black text-gray-900 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#DECA19]" />
+              <span>خط‌مشی کنترل کیفیت و استانداردهای بازرسی</span>
+            </h5>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">تیتر خط‌مشی کیفیت</label>
+                <input
+                  type="text"
+                  value={pages.about?.qualityPolicyTitle || 'پایش مستمر، تجهیزات کالیبره و تضمین صفر درصد عدم‌انطباق'}
+                  onChange={(e) => updateSubPage('about', 'qualityPolicyTitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">بج سیستم کنترل کیفیت</label>
+                <input
+                  type="text"
+                  value={pages.about?.qualityPolicySubtitle || 'سیستم مدیریت کیفیت (Quality Control)'}
+                  onChange={(e) => updateSubPage('about', 'qualityPolicySubtitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">توضیحات فرآیند بازرسی و کنترل کیفیت</label>
+              <textarea
+                rows={3}
+                value={pages.about?.qualityPolicyText || pages.about?.qualityText || ''}
+                onChange={(e) => {
+                  updateSubPage('about', 'qualityPolicyText', e.target.value);
+                  updateSubPage('about', 'qualityText', e.target.value);
+                }}
+                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
+              />
+            </div>
+          </div>
+
+          {/* CTA Box */}
+          <div className="pt-4 border-t border-gray-200/80 space-y-3">
+            <h5 className="text-xs font-black text-gray-900 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#DECA19]" />
+              <span>باکس دعوت به بازدید حضوری از کارخانه (CTA انتهای صفحه)</span>
+            </h5>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">تیتر باکس دعوت</label>
+                <input
+                  type="text"
+                  value={pages.about?.ctaTitle || 'میزبان مدیران محترم فنی، زنجیره تامین و کارفرمایان صنعتی هستیم'}
+                  onChange={(e) => updateSubPage('about', 'ctaTitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">بج هدر باکس دعوت</label>
+                <input
+                  type="text"
+                  value={pages.about?.ctaSubtitle || 'دعوت به بازدید حضوری از کارخانه'}
+                  onChange={(e) => updateSubPage('about', 'ctaSubtitle', e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">متن توضیحات دعوت به بازدید</label>
+              <textarea
+                rows={2}
+                value={pages.about?.ctaDescription || ''}
+                onChange={(e) => updateSubPage('about', 'ctaDescription', e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl leading-relaxed"
+              />
+            </div>
           </div>
         </div>
       )}

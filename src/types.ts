@@ -87,11 +87,13 @@ export interface CompanyInfoData {
   slogan: string;
   subSlogan: string;
   registrationNumber: string;
+  registrationNo?: string;
   experienceYears: string;
   personnelCount: string;
   productionArea: string;
   officeArea: string;
   totalArea: string;
+  factoryArea?: string;
   maxPressCapacity: string;
   phone: string;
   phoneDirect: string;
@@ -107,6 +109,23 @@ export interface CompanyInfoData {
   neshanMapsEmbedUrl: string;
   googleMapsUrl: string;
   googleMapsEmbedUrl: string;
+}
+
+export interface CoreValueItem {
+  id?: string;
+  title: string;
+  badge: string;
+  description: string;
+  points: string[];
+  icon?: string;
+}
+
+export interface QualityCertItem {
+  id?: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tag: string;
 }
 
 export interface IntegratedProcessStep {
@@ -193,8 +212,19 @@ export interface AboutPageContent {
   missionDescription?: string;
   visionTitle?: string;
   visionText?: string;
+  ethicsTitle?: string;
+  ethicsSubtitle?: string;
+  coreValues?: CoreValueItem[];
   qualityTitle?: string;
   qualityText?: string;
+  qualityPolicyTitle?: string;
+  qualityPolicySubtitle?: string;
+  qualityPolicyText?: string;
+  qualityCertifications?: QualityCertItem[];
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  ctaDescription?: string;
+  ctaAddress?: string;
   ceoMessageTitle?: string;
   ceoMessageText?: string;
   ceoName?: string;

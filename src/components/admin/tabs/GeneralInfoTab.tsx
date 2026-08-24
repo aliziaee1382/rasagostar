@@ -65,22 +65,13 @@ export const GeneralInfoTab: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">حداکثر ظرفیت پرسکاری (مثلاً: ۴۰۰ تن)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">شعار رسمی کارخانه</label>
             <input
               type="text"
-              value={info.maxPressCapacity}
-              onChange={(e) => updateCompanyInfo({ maxPressCapacity: e.target.value })}
+              value={info.slogan || ''}
+              onChange={(e) => updateCompanyInfo({ slogan: e.target.value })}
+              placeholder="«تجربه، تخصص و توانمندی در خدمت تولید»"
               className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-bold text-[#0F612F]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">مساحت و زیربنای کارخانه</label>
-            <input
-              type="text"
-              value={info.factoryArea}
-              onChange={(e) => updateCompanyInfo({ factoryArea: e.target.value })}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
             />
           </div>
 
@@ -88,9 +79,63 @@ export const GeneralInfoTab: React.FC = () => {
             <label className="block text-xs font-bold text-gray-700 mb-1">شماره ثبت / شناسه ملی</label>
             <input
               type="text"
-              value={info.registrationNo}
-              onChange={(e) => updateCompanyInfo({ registrationNo: e.target.value })}
+              value={info.registrationNo || info.registrationNumber || ''}
+              onChange={(e) => updateCompanyInfo({ registrationNo: e.target.value, registrationNumber: e.target.value })}
               className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">حداکثر ظرفیت پرسکاری (مثلاً: ۴۰۰ تن)</label>
+            <input
+              type="text"
+              value={info.maxPressCapacity || ''}
+              onChange={(e) => updateCompanyInfo({ maxPressCapacity: e.target.value })}
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-bold text-[#0F612F]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">متراژ کل مجموعه (متر مربع)</label>
+            <input
+              type="text"
+              value={info.totalArea || info.factoryArea || ''}
+              onChange={(e) => updateCompanyInfo({ totalArea: e.target.value, factoryArea: e.target.value })}
+              placeholder="2000"
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">مساحت سالن تولید و ماشین‌آلات (متر مربع)</label>
+            <input
+              type="text"
+              value={info.productionArea || ''}
+              onChange={(e) => updateCompanyInfo({ productionArea: e.target.value })}
+              placeholder="1200"
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">مساحت واحد اداری و مهندسی (متر مربع)</label>
+            <input
+              type="text"
+              value={info.officeArea || ''}
+              onChange={(e) => updateCompanyInfo({ officeArea: e.target.value })}
+              placeholder="300"
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">تعداد پرسنل و کادر فنی (نفر)</label>
+            <input
+              type="text"
+              value={info.personnelCount || ''}
+              onChange={(e) => updateCompanyInfo({ personnelCount: e.target.value })}
+              placeholder="60+"
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-xl"
             />
           </div>
         </div>
